@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<!--
+  Concept : Plein jaune
+  Grande idée :
+    1. SowDigital possède le jaune. On le joue à plein volume : deux grands champs jaunes, du noir très gras, du blanc pour respirer.
+    2. Les formes sortent du monogramme SD : la fenêtre en D (bord droit, bord rond) cadre les photos, la pilule et l'arche reprennent les traits arrondis.
+    3. Le point du logo devient le rythme : il ferme chaque titre, pilote le montage du hero, suit le curseur dans la liste des événements.
+  Typographies : Unbounded (titres, 600 à 900) et Figtree (texte, 400 à 700).
+  Palette : jaune #FFB800, noir #0B0B0B, encre #1B1B1B, blanc #FFFFFF, brume #F1F1F1, gris texte #575757, ligne #E4E4E4.
+  Règle : jamais de texte jaune sur fond clair. Le jaune porte des fonds, des formes et des points, avec du noir dessus.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SowDigital, photo, vidéo et digital à Dakar</title>
+<meta name="description" content="Studio photo, vidéo et communication digitale à Dakar. Forums, sommets, cérémonies officielles, sport et culture : la séquence complète, de l'arrivée des officiels à la photo de famille.">
+<meta name="theme-color" content="#FFB800">
+<link rel="icon" href="../brand/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
+<link rel="preconnect" href="https://res.cloudinary.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Unbounded:wght@600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.14"></script>
+<style type="text/tailwindcss">
+@theme {
+  --color-jaune: #FFB800;
+  --color-noir: #0B0B0B;
+  --color-encre: #1B1B1B;
+  --color-brume: #F1F1F1;
+  --color-gris: #575757;
+  --color-ligne: #E4E4E4;
+  --font-display: "Unbounded", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --ease-doux: cubic-bezier(.22, 1, .36, 1);
+}
+</style>
+<style>
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5.5rem; }
+  body { background: #FFFFFF; color: #0B0B0B; font-family: "Figtree", ui-sans-serif, system-ui, sans-serif; overflow-x: hidden; }
+  @supports (overflow: clip) { body { overflow-x: clip; } }
+  ::selection { background: #FFB800; color: #0B0B0B; }
+  :focus-visible { outline: 3px solid #0B0B0B; outline-offset: 3px; }
+  .on-dark :focus-visible { outline-color: #FFB800; }
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* Le point du logo */
+  .dot { display: inline-block; width: .19em; height: .19em; margin-left: .05em; border-radius: 999px; background: currentColor; }
+  .dot-j { background: #FFB800; }
+  .dot-w { background: #FFFFFF; }
+
+  /* La fenêtre en D, tirée du monogramme : bord gauche droit, bord droit en demi-cercle.
+     Rayon horizontal = 0,5 / ratio largeur-hauteur. */
+  .d-125 { border-radius: 1.25rem 40% 40% 1.25rem / 1.25rem 50% 50% 1.25rem; }
+  .d-133 { border-radius: 1.5rem 37.5% 37.5% 1.5rem / 1.5rem 50% 50% 1.5rem; }
+  @media (min-width: 768px) { .md\:d-160 { border-radius: 1.5rem 31.25% 31.25% 1.5rem / 1.5rem 50% 50% 1.5rem; } }
+  @media (min-width: 1024px) { .lg\:d-088 { border-radius: 1.75rem 56.8% 56.8% 1.75rem / 1.75rem 50% 50% 1.75rem; } }
+  /* L'arche : les traits arrondis du SD */
+  .arch { border-radius: 999px 999px 1.5rem 1.5rem; }
+
+  /* Titre du hero : les lignes montent à l'ouverture */
+  .line { display: block; overflow: hidden; padding-bottom: .08em; margin-bottom: -.08em; }
+  .js .line > span { display: inline-block; transform: translateY(110%); transition: transform 1.1s cubic-bezier(.22, 1, .36, 1); }
+  .js .line + .line > span { transition-delay: .09s; }
+  .is-ready .line > span { transform: none; }
+  .js [data-hero-media] { opacity: 0; transform: translateX(32px); transition: opacity 1s ease .25s, transform 1.2s cubic-bezier(.22, 1, .36, 1) .25s; }
+  .is-ready [data-hero-media] { opacity: 1; transform: none; }
+
+  /* Montage : fondu enchaîné et zoom lent */
+  .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s cubic-bezier(.22, 1, .36, 1); }
+  .slide.is-on { opacity: 1; }
+  .slide picture { display: block; height: 100%; }
+  .slide img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.03); transition: transform 7s linear; }
+  .slide.is-on img { transform: scale(1.13); }
+  .is-paused .slide img { transition: none; }
+  .ring-run { animation: anneau 5s linear forwards; }
+  @keyframes anneau { from { stroke-dashoffset: 289.03; } to { stroke-dashoffset: 0; } }
+  .is-paused .ring-run { animation: none; stroke-dashoffset: 289.03; }
+  .icon-play { display: none; }
+  .is-paused .icon-play { display: block; }
+  .is-paused .icon-pause { display: none; }
+
+  /* Bandeau défilant */
+  @keyframes defile { to { transform: translateX(-50%); } }
+  .marquee-track { display: flex; width: max-content; animation: defile 52s linear infinite; }
+  .marquee:hover .marquee-track, .is-paused .marquee-track { animation-play-state: paused; }
+
+  /* Apparition au scroll */
+  .js [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .9s cubic-bezier(.22, 1, .36, 1); transition-delay: var(--d, 0ms); }
+  .js [data-reveal].is-in { opacity: 1; transform: none; }
+
+  /* Séquence : la ligne se trace */
+  .js .seq-line { transform: scaleX(0); transform-origin: left; transition: transform 1.6s cubic-bezier(.22, 1, .36, 1); }
+  .js .seq.is-in .seq-line { transform: none; }
+  .js .seq .num { transform: scale(.4); opacity: 0; transition: transform .6s cubic-bezier(.34, 1.56, .64, 1), opacity .4s ease; transition-delay: var(--d, 0ms); }
+  .js .seq.is-in .num { transform: none; opacity: 1; }
+
+  /* Cartes projet */
+  .card-img img { transition: transform .9s cubic-bezier(.22, 1, .36, 1); }
+  .card:hover .card-img img { transform: scale(1.05); }
+  .card-go { transform: scale(.5) rotate(-45deg); opacity: 0; transition: transform .45s cubic-bezier(.34, 1.56, .64, 1), opacity .3s ease; }
+  .card:hover .card-go, .card:focus-visible .card-go { transform: none; opacity: 1; }
+  .hl { background: linear-gradient(#FFB800, #FFB800) 0 88% / 0 .34em no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size .5s cubic-bezier(.22, 1, .36, 1); }
+  .card:hover .hl, .card:focus-visible .hl { background-size: 100% .34em; }
+  @media (hover: none) { .card-go { transform: none; opacity: 1; } }
+
+  /* Liste des événements : le point jaune balaie la ligne */
+  .row { position: relative; isolation: isolate; }
+  .row::before { content: ""; position: absolute; inset: 4px -1rem; z-index: -1; border-radius: 999px; background: #FFB800; transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.22, 1, .36, 1); }
+  .row:hover::before, .row:focus-visible::before { transform: none; }
+  .row:hover .text-gris, .row:focus-visible .text-gris { color: #0B0B0B; }
+  .row:hover .row-go, .row:focus-visible .row-go { background: #0B0B0B; color: #FFB800; transform: rotate(-45deg); }
+  .peek { transition: opacity .3s ease, scale .4s cubic-bezier(.22, 1, .36, 1); scale: .6; }
+  .peek.is-on { opacity: 1; scale: 1; }
+
+  /* Onglets et vidéo */
+  .tab-panel[hidden] { display: none; }
+  .tab-panel img { animation: entre .7s cubic-bezier(.22, 1, .36, 1); }
+  @keyframes entre { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: none; } }
+  [data-nav] a[aria-current] { background: #FFB800; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0ms !important; scroll-behavior: auto !important; }
+    .js [data-reveal], .js .seq .num, .js [data-hero-media] { opacity: 1; transform: none; }
+    .js .line > span, .js .seq-line { transform: none; }
+    .slide img, .slide.is-on img { transform: none; }
+  }
+</style>
+</head>
+<body class="antialiased">
+
+<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.18-1.42-.08-.12-.28-.2-.57-.34m-5.42 7.4h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-diag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></symbol>
+</svg>
+
+<a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-noir focus:px-5 focus:py-3 focus:font-semibold focus:text-white">Aller au contenu</a>
+
+<!-- ============ EN-TÊTE ============ -->
+<header id="haut" class="sticky top-0 z-40 bg-white/90 backdrop-blur-md transition-shadow" data-header>
+  <div class="mx-auto flex h-16 max-w-[1440px] items-center justify-between gap-4 px-4 md:px-6 lg:h-20 lg:px-10">
+    <a href="#haut" class="flex min-h-11 items-center">
+      <img src="../brand/logo-dark.png" width="720" height="103" alt="SowDigital, accueil" class="h-[22px] w-auto sm:h-6 lg:h-7">
+    </a>
+    <nav aria-label="Navigation principale" class="hidden lg:block" data-nav>
+      <ul class="flex items-center gap-1 text-[15px] font-semibold">
+        <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full px-4 transition-colors hover:bg-jaune">Travaux</a></li>
+        <li><a href="#expertises" class="inline-flex min-h-11 items-center rounded-full px-4 transition-colors hover:bg-jaune">Expertises</a></li>
+        <li><a href="#studio" class="inline-flex min-h-11 items-center rounded-full px-4 transition-colors hover:bg-jaune">Studio</a></li>
+        <li><a href="#contact" class="inline-flex min-h-11 items-center rounded-full px-4 transition-colors hover:bg-jaune">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="https://wa.me/221773718484" target="_blank" rel="noopener" class="inline-flex size-11 items-center justify-center gap-2 rounded-full bg-jaune font-bold text-noir transition-transform hover:-translate-y-0.5 sm:size-auto sm:min-h-11 sm:px-5" aria-label="Écrire à SowDigital sur WhatsApp">
+        <svg class="size-5" aria-hidden="true"><use href="#i-wa"/></svg>
+        <span class="hidden sm:inline" aria-hidden="true">WhatsApp</span>
+      </a>
+      <button type="button" class="inline-flex size-11 items-center justify-center rounded-full border-2 border-noir transition-colors hover:bg-noir hover:text-white lg:hidden" aria-expanded="false" aria-controls="menu" data-menu-open>
+        <span class="sr-only">Ouvrir le menu</span>
+        <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true"><path d="M4 8h16M4 16h11" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MENU MOBILE ============ -->
+<div id="menu" class="on-dark fixed inset-0 z-50 hidden flex-col overflow-y-auto bg-noir text-white" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="flex h-16 shrink-0 items-center justify-between px-4 md:px-6">
+    <img src="../brand/logo-light.png" width="720" height="103" alt="SowDigital" class="h-[22px] w-auto sm:h-6">
+    <button type="button" class="inline-flex size-11 items-center justify-center rounded-full bg-jaune text-noir" data-menu-close>
+      <span class="sr-only">Fermer le menu</span>
+      <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <nav aria-label="Navigation mobile" class="px-4 pt-6 md:px-6">
+    <ul class="font-display text-[2.1rem] font-bold leading-none tracking-[-0.02em]">
+      <li class="border-b border-white/15"><a href="#travaux" class="flex min-h-11 items-center justify-between py-5 transition-colors hover:text-jaune" data-menu-link>Travaux <span class="dot dot-j"></span></a></li>
+      <li class="border-b border-white/15"><a href="#expertises" class="flex min-h-11 items-center justify-between py-5 transition-colors hover:text-jaune" data-menu-link>Expertises <span class="dot dot-j"></span></a></li>
+      <li class="border-b border-white/15"><a href="#studio" class="flex min-h-11 items-center justify-between py-5 transition-colors hover:text-jaune" data-menu-link>Studio <span class="dot dot-j"></span></a></li>
+      <li class="border-b border-white/15"><a href="#contact" class="flex min-h-11 items-center justify-between py-5 transition-colors hover:text-jaune" data-menu-link>Contact <span class="dot dot-j"></span></a></li>
+    </ul>
+  </nav>
+  <div class="mt-auto space-y-3 px-4 pb-8 pt-10 md:px-6">
+    <a href="https://wa.me/221773718484" target="_blank" rel="noopener" class="flex min-h-14 items-center justify-center gap-3 rounded-full bg-jaune px-6 text-lg font-bold text-noir">
+      <svg class="size-6" aria-hidden="true"><use href="#i-wa"/></svg> Écrire sur WhatsApp
+    </a>
+    <a href="tel:+221773718484" class="flex min-h-12 items-center justify-center gap-3 rounded-full border-2 border-white/30 px-6 font-semibold">
+      <svg class="size-5" aria-hidden="true"><use href="#i-phone"/></svg> +221 77 371 84 84
+    </a>
+    <p class="pt-2 text-center text-sm text-white/70">Dakar, Sénégal</p>
+  </div>
+</div>
+
+<main id="contenu">
+
+<!-- ============ HERO ============ -->
+<section class="px-3 md:px-4" aria-labelledby="hero-titre">
+  <div class="relative mx-auto max-w-[1440px] overflow-hidden rounded-[2rem] bg-jaune lg:rounded-[2.75rem]" data-hero>
+    <div class="grid px-5 pb-6 pt-6 md:px-10 md:pb-10 md:pt-10 lg:min-h-[clamp(40rem,calc(100svh-11.5rem),54rem)] lg:grid-cols-12 lg:grid-rows-[auto_1fr_auto] lg:gap-x-6 lg:px-14 lg:py-14">
+
+      <p class="inline-flex w-fit items-center gap-2 rounded-full bg-noir px-4 py-2 text-[13px] font-semibold text-white sm:text-sm lg:col-span-7 lg:row-start-1">
+        <span class="size-2 rounded-full bg-jaune" aria-hidden="true"></span> COM'DIGITAL 360 · Dakar, Sénégal
+      </p>
+
+      <div class="mt-6 lg:col-span-7 lg:row-start-2 lg:mt-0 lg:self-end">
+        <h1 id="hero-titre" class="font-display text-[clamp(2.9rem,12.6vw,5rem)] font-black leading-[.9] tracking-[-0.045em] lg:text-[clamp(4.6rem,7.6vw,7rem)]">
+          <span class="line"><span>On couvre</span></span>
+          <span class="line"><span>tout<span class="dot" aria-hidden="true"></span><span class="sr-only">.</span></span></span>
+        </h1>
+        <p class="mt-5 max-w-[34rem] text-base font-medium leading-relaxed text-noir/85 sm:text-[17px] lg:mt-8 lg:text-xl">
+          De l'arrivée des officiels à la photo de famille. Photo, vidéo et digital pour les forums, les cérémonies officielles, le sport et la culture.
+        </p>
+      </div>
+
+      <!-- Fenêtre en D : montage -->
+      <div class="relative mt-6 lg:col-span-5 lg:col-start-8 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:self-center" data-hero-media>
+        <div id="montage" class="d-125 md:d-160 lg:d-088 relative aspect-[1.25] w-full overflow-hidden bg-noir md:aspect-[1.6] lg:aspect-[0.88]">
+          <figure class="slide is-on" data-caption="Rencontre SPEBTPS · Avril 2025">
+            <picture>
+              <source media="(min-width: 1024px)" width="880" height="1000"
+                srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_560/sowdigital/c1-346 560w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_880/sowdigital/c1-346 880w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_1120/sowdigital/c1-346 1120w"
+                sizes="(min-width: 1440px) 526px, 37vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_720/sowdigital/c1-346"
+                srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_480/sowdigital/c1-346 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_720/sowdigital/c1-346 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_1080/sowdigital/c1-346 1080w"
+                sizes="calc(100vw - 4rem)" width="720" height="576" fetchpriority="high"
+                alt="Une intervenante souriante à lunettes et robe noire s'exprime devant un micro de presse APS près d'une baie vitrée.">
+            </picture>
+          </figure>
+          <figure class="slide" aria-hidden="true" data-caption="Celebrity Game BAL · Août 2026">
+            <picture>
+              <source media="(min-width: 1024px)" width="880" height="1000"
+                data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_560/sowdigital/c1-1340 560w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_880/sowdigital/c1-1340 880w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_1120/sowdigital/c1-1340 1120w"
+                sizes="(min-width: 1440px) 526px, 37vw">
+              <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_480/sowdigital/c1-1340 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_720/sowdigital/c1-1340 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_1080/sowdigital/c1-1340 1080w"
+                sizes="calc(100vw - 4rem)" width="720" height="576" decoding="async"
+                alt="Des joueurs en maillots Celebrity Game blanc et vert, dont les numéros 35, 3 et 32, échangent sur le terrain">
+            </picture>
+          </figure>
+          <figure class="slide" aria-hidden="true" data-caption="NP Show Culture · Janvier 2026">
+            <picture>
+              <source media="(min-width: 1024px)" width="880" height="1000"
+                data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_560/sowdigital/c2-265 560w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_880/sowdigital/c2-265 880w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_1120/sowdigital/c2-265 1120w"
+                sizes="(min-width: 1440px) 526px, 37vw">
+              <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_480/sowdigital/c2-265 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_720/sowdigital/c2-265 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_1080/sowdigital/c2-265 1080w"
+                sizes="calc(100vw - 4rem)" width="720" height="576" decoding="async"
+                alt="Une troupe de danseurs en tee-shirts blancs exécute une chorégraphie sur une scène de nuit éclairée par des projecteurs.">
+            </picture>
+          </figure>
+          <figure class="slide" aria-hidden="true" data-caption="Première pierre · Juin 2026">
+            <picture>
+              <source media="(min-width: 1024px)" width="880" height="1000"
+                data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_560/sowdigital/c2-552 560w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_880/sowdigital/c2-552 880w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_1120/sowdigital/c2-552 1120w"
+                sizes="(min-width: 1440px) 526px, 37vw">
+              <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_480/sowdigital/c2-552 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_720/sowdigital/c2-552 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_1080/sowdigital/c2-552 1080w"
+                sizes="calc(100vw - 4rem)" width="720" height="576" decoding="async"
+                alt="Une personnalité en boubou blanc et lunettes pointe du doigt en parlant, à côté d'un véhicule tout-terrain gris.">
+            </picture>
+          </figure>
+          <figure class="slide" aria-hidden="true" data-caption="Salon d'honneur · Août 2026">
+            <picture>
+              <source media="(min-width: 1024px)" width="880" height="1000"
+                data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_560/sowdigital/c1-1301 560w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_880/sowdigital/c1-1301 880w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.88,w_1120/sowdigital/c1-1301 1120w"
+                sizes="(min-width: 1440px) 526px, 37vw">
+              <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_480/sowdigital/c1-1301 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_720/sowdigital/c1-1301 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.25,w_1080/sowdigital/c1-1301 1080w"
+                sizes="calc(100vw - 4rem)" width="720" height="576" decoding="async"
+                alt="Une femme au foulard blanc et parure dorée sourit pendant une étreinte avec une autre femme vêtue de blanc brodé.">
+            </picture>
+          </figure>
+        </div>
+
+        <!-- Le point : pilote du montage -->
+        <button type="button" class="on-dark absolute -left-2 bottom-4 grid size-16 place-items-center rounded-full bg-noir text-white shadow-[0_10px_30px_rgba(0,0,0,.25)] transition-transform hover:scale-105 lg:-left-11 lg:bottom-9 lg:size-[5.5rem]" aria-pressed="false" aria-label="Mettre les animations en pause" data-motion-toggle>
+          <svg viewBox="0 0 100 100" class="absolute inset-0 size-full -rotate-90" aria-hidden="true">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="4"/>
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#FFB800" stroke-width="4" stroke-linecap="round" stroke-dasharray="289.03" stroke-dashoffset="289.03" data-ring/>
+          </svg>
+          <svg viewBox="0 0 24 24" class="icon-pause size-5 lg:size-6" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+          <svg class="icon-play ml-0.5 size-5 text-jaune lg:size-6" aria-hidden="true"><use href="#i-play"/></svg>
+        </button>
+        <p class="absolute bottom-[1.6rem] left-[4.25rem] inline-flex max-w-[calc(100%-6rem)] items-center rounded-full bg-white px-3.5 py-2 text-[12px] font-semibold shadow-[0_8px_30px_rgba(0,0,0,.14)] sm:text-[13px] lg:bottom-[3.15rem] lg:left-[3.6rem] lg:max-w-[calc(100%-6rem)] lg:text-sm">
+          <span class="truncate" data-caption-target>Rencontre SPEBTPS · Avril 2025</span>
+        </p>
+      </div>
+
+      <div class="mt-6 grid grid-cols-2 gap-3 sm:flex lg:col-span-7 lg:row-start-3 lg:mt-10">
+        <a href="https://wa.me/221773718484" target="_blank" rel="noopener" class="inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full bg-noir px-5 text-[15px] font-bold text-white transition-transform hover:-translate-y-0.5 sm:px-7 sm:text-base">
+          <svg class="size-5 shrink-0 text-jaune" aria-hidden="true"><use href="#i-wa"/></svg><span class="sm:hidden">WhatsApp</span><span class="hidden sm:inline">Écrire sur WhatsApp</span>
+        </a>
+        <a href="#travaux" class="group inline-flex min-h-14 items-center justify-center gap-2.5 rounded-full border-2 border-noir px-5 text-[15px] font-bold transition-colors hover:bg-noir hover:text-white sm:px-7 sm:text-base">
+          <span class="sm:hidden">Travaux</span><span class="hidden sm:inline">Voir les travaux</span><svg class="size-5 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BANDEAU DES ÉVÉNEMENTS ============ -->
+<div class="mt-3 px-3 md:px-4" aria-hidden="true">
+  <div class="marquee mx-auto max-w-[1440px] overflow-hidden rounded-full bg-noir py-4 lg:py-6">
+    <div class="marquee-track">
+      <ul class="flex shrink-0 items-center gap-6 pr-6 font-display text-xl font-semibold tracking-[-0.01em] text-jaune lg:gap-10 lg:pr-10 lg:text-[2rem]">
+        <li class="whitespace-nowrap">FII Sénégal 2025</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">G20 Conference in West Africa</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">65 ans de l'Indépendance</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">BAL 2025</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Tiken Jah Facoly au CICES</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Senegal Expo Osaka 2025</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">10 km de Dakar</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Les Mardis du BTP</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Salon international de l'habitat</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">SPACEBUS'2025</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">NP Show Culture</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Lancement du PROVES</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+      </ul>
+      <ul class="flex shrink-0 items-center gap-6 pr-6 font-display text-xl font-semibold tracking-[-0.01em] text-jaune lg:gap-10 lg:pr-10 lg:text-[2rem]">
+        <li class="whitespace-nowrap">FII Sénégal 2025</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">G20 Conference in West Africa</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">65 ans de l'Indépendance</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">BAL 2025</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Tiken Jah Facoly au CICES</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Senegal Expo Osaka 2025</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">10 km de Dakar</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Les Mardis du BTP</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Salon international de l'habitat</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">SPACEBUS'2025</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">NP Show Culture</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+        <li class="whitespace-nowrap">Lancement du PROVES</li><li class="size-2.5 rounded-full bg-white lg:size-3.5"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TRAVAUX À LA UNE ============ -->
+<section id="travaux" class="mx-auto max-w-[1440px] px-4 py-20 md:px-6 lg:px-10 lg:py-32" aria-labelledby="travaux-titre">
+  <div class="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end lg:mb-14" data-reveal>
+    <div>
+      <p class="inline-flex items-center gap-2 text-sm font-bold"><span class="size-2.5 rounded-full bg-jaune ring-2 ring-noir" aria-hidden="true"></span>Travaux</p>
+      <h2 id="travaux-titre" class="mt-5 font-display text-[clamp(2.6rem,6.4vw,5.6rem)] font-black leading-[.95] tracking-[-0.04em]">À la une<span class="dot dot-j" aria-hidden="true"></span></h2>
+      <p class="mt-5 max-w-md text-lg leading-relaxed text-gris">Huit reportages choisis parmi les 37 publiés. Chaque carte ouvre le sien.</p>
+    </div>
+    <a href="#travaux" class="group inline-flex min-h-12 w-fit items-center gap-3 rounded-full border-2 border-noir px-6 font-bold transition-colors hover:bg-noir hover:text-white">
+      Voir les 37 reportages <svg class="size-5 transition-transform group-hover:translate-x-1" aria-hidden="true"><use href="#i-arrow"/></svg>
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-12 lg:gap-y-16">
+    <!-- A -->
+    <article class="md:col-span-8" data-reveal>
+      <a href="#travaux" class="card group flex h-full flex-col rounded-[1.75rem]">
+        <div class="card-img relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-brume md:aspect-[3/2]">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_960/sowdigital/c1-263"
+            srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_640/sowdigital/c1-263 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_960/sowdigital/c1-263 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1280/sowdigital/c1-263 1280w"
+            sizes="(min-width: 1440px) 870px, (min-width: 768px) 64vw, 100vw" width="960" height="640" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+            alt="Des danseurs en tenues traditionnelles bleues, vertes et roses dansent devant la foule lors du défilé">
+          <span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-jaune px-3.5 py-1.5 text-[13px] font-bold"><span class="size-1.5 rounded-full bg-noir"></span>Institutionnel</span>
+          <span class="card-go absolute bottom-4 right-4 grid size-14 place-items-center rounded-full bg-noir text-jaune" aria-hidden="true"><svg class="size-6"><use href="#i-diag"/></svg></span>
+        </div>
+        <div class="pt-5">
+          <p class="text-sm font-medium text-gris">Avril 2025 · Dakar</p>
+          <h3 class="mt-1.5 max-w-2xl text-xl font-bold leading-snug lg:text-2xl"><span class="hl">65 ans de l'Indépendance du Sénégal, défilé du 4 avril</span></h3>
+        </div>
+      </a>
+    </article>
+    <!-- B -->
+    <article class="md:col-span-4 md:grid" data-reveal style="--d:100ms">
+      <a href="#travaux" class="card group flex h-full flex-col rounded-[1.75rem] md:grid md:grid-rows-[1fr_auto]">
+        <div class="card-img relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-brume md:aspect-auto md:min-h-[16rem]">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_680/sowdigital/c1-676"
+            srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_440/sowdigital/c1-676 440w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_680/sowdigital/c1-676 680w"
+            sizes="(min-width: 1440px) 430px, (min-width: 768px) 31vw, 100vw" width="680" height="850" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+            alt="Un coureur en maillot jaune écarte les bras en souriant sur la corniche, entouré d'autres coureurs et de spectateurs.">
+          <span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-jaune px-3.5 py-1.5 text-[13px] font-bold"><span class="size-1.5 rounded-full bg-noir"></span>Sport</span>
+          <span class="card-go absolute bottom-4 right-4 grid size-14 place-items-center rounded-full bg-noir text-jaune" aria-hidden="true"><svg class="size-6"><use href="#i-diag"/></svg></span>
+        </div>
+        <div class="pt-5">
+          <p class="text-sm font-medium text-gris">Mai 2025 · Corniche, Dakar</p>
+          <h3 class="mt-1.5 text-xl font-bold leading-snug"><span class="hl">10 km de Dakar, La Foulée de la Teranga</span></h3>
+        </div>
+      </a>
+    </article>
+
+    <!-- Rangée de 4 : défilement horizontal sur mobile -->
+    <div class="md:col-span-12">
+      <ul class="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-4 px-4 pb-2 md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4" aria-label="Autres reportages à la une">
+        <li class="w-[76%] shrink-0 snap-start md:w-auto" data-reveal>
+          <a href="#travaux" class="card group flex h-full flex-col rounded-[1.75rem]">
+            <div class="card-img relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-brume">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_640/sowdigital/c1-1195"
+                srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_400/sowdigital/c1-1195 400w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_640/sowdigital/c1-1195 640w"
+                sizes="(min-width: 1024px) 320px, (min-width: 768px) 46vw, 76vw" width="640" height="800" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+                alt="Vue large du panel sur scène, un intervenant projeté sur l'écran géant, et le public attablé au premier plan.">
+              <span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-jaune px-3.5 py-1.5 text-[13px] font-bold"><span class="size-1.5 rounded-full bg-noir"></span>Forum et conférence</span>
+              <span class="card-go absolute bottom-4 right-4 grid size-12 place-items-center rounded-full bg-noir text-jaune" aria-hidden="true"><svg class="size-5"><use href="#i-diag"/></svg></span>
+            </div>
+            <div class="pt-4">
+              <p class="text-sm font-medium text-gris">Octobre 2025 · Dakar Sea Plaza</p>
+              <h3 class="mt-1.5 text-lg font-bold leading-snug"><span class="hl">G20 Conference in West Africa, Noom Hotel Dakar Sea Plaza</span></h3>
+            </div>
+          </a>
+        </li>
+        <li class="w-[76%] shrink-0 snap-start md:w-auto" data-reveal style="--d:80ms">
+          <a href="#travaux" class="card group flex h-full flex-col rounded-[1.75rem]">
+            <div class="card-img relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-brume">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_640/sowdigital/c1-243"
+                srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_400/sowdigital/c1-243 400w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_640/sowdigital/c1-243 640w"
+                sizes="(min-width: 1024px) 320px, (min-width: 768px) 46vw, 76vw" width="640" height="800" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+                alt="Une personnalité officielle pensive, main au menton, assise devant le drapeau du Sénégal sur scène">
+              <span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-jaune px-3.5 py-1.5 text-[13px] font-bold"><span class="size-1.5 rounded-full bg-noir"></span>Institutionnel</span>
+              <span class="card-go absolute bottom-4 right-4 grid size-12 place-items-center rounded-full bg-noir text-jaune" aria-hidden="true"><svg class="size-5"><use href="#i-diag"/></svg></span>
+            </div>
+            <div class="pt-4">
+              <p class="text-sm font-medium text-gris">Mars 2025 · Dakar</p>
+              <h3 class="mt-1.5 text-lg font-bold leading-snug"><span class="hl">Senegal Expo Osaka 2025, rencontre officielle MINCOM et ASEPEX</span></h3>
+            </div>
+          </a>
+        </li>
+        <li class="w-[76%] shrink-0 snap-start md:w-auto" data-reveal style="--d:160ms">
+          <a href="#travaux" class="card group flex h-full flex-col rounded-[1.75rem]">
+            <div class="card-img relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-brume">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_620/sowdigital/c1-594"
+                srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_400/sowdigital/c1-594 400w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_620/sowdigital/c1-594 620w"
+                sizes="(min-width: 1024px) 320px, (min-width: 768px) 46vw, 76vw" width="620" height="775" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+                alt="Le grand auditorium du CICAD rempli de participants, avec son mur facetté illuminé de rouge et un écran géant au fond.">
+              <span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-jaune px-3.5 py-1.5 text-[13px] font-bold"><span class="size-1.5 rounded-full bg-noir"></span>Forum et conférence</span>
+              <span class="card-go absolute bottom-4 right-4 grid size-12 place-items-center rounded-full bg-noir text-jaune" aria-hidden="true"><svg class="size-5"><use href="#i-diag"/></svg></span>
+            </div>
+            <div class="pt-4">
+              <p class="text-sm font-medium text-gris">Mai 2025 · CICAD, Dakar</p>
+              <h3 class="mt-1.5 text-lg font-bold leading-snug"><span class="hl">5e Salon international de l'habitat et 1er Symposium des architectes africains</span></h3>
+            </div>
+          </a>
+        </li>
+        <li class="w-[76%] shrink-0 snap-start md:w-auto" data-reveal style="--d:240ms">
+          <a href="#travaux" class="card group flex h-full flex-col rounded-[1.75rem]">
+            <div class="card-img relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-brume">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_640/sowdigital/c1-983"
+                srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_400/sowdigital/c1-983 400w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_640/sowdigital/c1-983 640w"
+                sizes="(min-width: 1024px) 320px, (min-width: 768px) 46vw, 76vw" width="640" height="800" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+                alt="Un groupe de volontaires accroupis dans la vase pose joyeusement devant la mangrove sous un ciel bleu, bras levés.">
+              <span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-jaune px-3.5 py-1.5 text-[13px] font-bold"><span class="size-1.5 rounded-full bg-noir"></span>Institutionnel</span>
+              <span class="card-go absolute bottom-4 right-4 grid size-12 place-items-center rounded-full bg-noir text-jaune" aria-hidden="true"><svg class="size-5"><use href="#i-diag"/></svg></span>
+            </div>
+            <div class="pt-4">
+              <p class="text-sm font-medium text-gris">Novembre 2024 · Sénégal</p>
+              <h3 class="mt-1.5 text-lg font-bold leading-snug"><span class="hl">Opération 1.000.000 arbres, reboisement de la mangrove</span></h3>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- C -->
+    <article class="md:col-span-4 md:grid" data-reveal>
+      <a href="#travaux" class="card group flex h-full flex-col rounded-[1.75rem] md:grid md:grid-rows-[1fr_auto]">
+        <div class="card-img relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-brume md:aspect-auto md:min-h-[16rem]">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_680/sowdigital/c1-1246"
+            srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_440/sowdigital/c1-1246 440w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_680/sowdigital/c1-1246 680w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_960/sowdigital/c1-1246 960w"
+            sizes="(min-width: 1440px) 430px, (min-width: 768px) 31vw, 100vw" width="680" height="850" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+            alt="Un panéliste en costume noir parle au micro en gesticulant de la main gauche, assis sur la scène de la table ronde.">
+          <span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-jaune px-3.5 py-1.5 text-[13px] font-bold"><span class="size-1.5 rounded-full bg-noir"></span>Forum et conférence</span>
+          <span class="card-go absolute bottom-4 right-4 grid size-14 place-items-center rounded-full bg-noir text-jaune" aria-hidden="true"><svg class="size-6"><use href="#i-diag"/></svg></span>
+        </div>
+        <div class="pt-5">
+          <p class="text-sm font-medium text-gris">Avril 2026 · Hôtel NOOM, Dakar</p>
+          <h3 class="mt-1.5 text-xl font-bold leading-snug"><span class="hl">Les Mardis du BTP : table ronde de haut niveau à l'Hôtel NOOM</span></h3>
+        </div>
+      </a>
+    </article>
+    <!-- D -->
+    <article class="md:col-span-8" data-reveal style="--d:100ms">
+      <a href="#travaux" class="card group flex h-full flex-col rounded-[1.75rem]">
+        <div class="card-img relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-brume md:aspect-[3/2]">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_960/sowdigital/c2-271"
+            srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_640/sowdigital/c2-271 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_960/sowdigital/c2-271 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1600/sowdigital/c2-271 1600w"
+            sizes="(min-width: 1440px) 870px, (min-width: 768px) 64vw, 100vw" width="960" height="640" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+            alt="Une chanteuse en boubou jaune chante au micro près de femmes jouant des calebasses sur l'eau, sur la scène du NP Show Culture.">
+          <span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-jaune px-3.5 py-1.5 text-[13px] font-bold"><span class="size-1.5 rounded-full bg-noir"></span>Culture et spectacle</span>
+          <span class="card-go absolute bottom-4 right-4 grid size-14 place-items-center rounded-full bg-noir text-jaune" aria-hidden="true"><svg class="size-6"><use href="#i-diag"/></svg></span>
+        </div>
+        <div class="pt-5">
+          <p class="text-sm font-medium text-gris">Janvier 2026</p>
+          <h3 class="mt-1.5 text-xl font-bold leading-snug lg:text-2xl"><span class="hl">NP Show Culture, 1re édition</span></h3>
+        </div>
+      </a>
+    </article>
+  </div>
+</section>
+
+<!-- ============ PREUVES : LA LISTE DES ÉVÉNEMENTS ============ -->
+<section id="preuves" class="mx-auto max-w-[1440px] px-4 pb-20 md:px-6 lg:px-10 lg:pb-32" aria-labelledby="preuves-titre">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-6">
+    <div class="lg:sticky lg:top-28 lg:col-span-4 lg:self-start" data-reveal>
+      <p class="inline-flex items-center gap-2 text-sm font-bold"><span class="size-2.5 rounded-full bg-jaune ring-2 ring-noir" aria-hidden="true"></span>Sur le terrain</p>
+      <h2 id="preuves-titre" class="mt-5 font-display text-[clamp(2.5rem,5.6vw,5rem)] font-black leading-[.95] tracking-[-0.04em]">On y était<span class="dot dot-j" aria-hidden="true"></span></h2>
+      <p class="mt-6 max-w-md text-lg leading-relaxed text-gris">Forums, sommets, défilés, concerts, courses. Chaque nom de la liste ouvre son reportage.</p>
+      <div class="mt-10 flex gap-3 sm:gap-4">
+        <div class="grid aspect-square w-[9.5rem] place-content-center rounded-full bg-jaune text-center sm:w-44">
+          <span class="font-display text-[2.9rem] font-black leading-none tracking-[-0.04em] lg:text-[3.4rem]" data-count="37">37</span>
+          <span class="mt-2 text-[13px] font-bold leading-tight sm:text-sm">reportages<br>publiés</span>
+        </div>
+        <div class="grid aspect-square w-[9.5rem] place-content-center rounded-full bg-noir text-center text-white sm:w-44">
+          <span class="font-display text-[2.9rem] font-black leading-none tracking-[-0.04em] text-jaune lg:text-[3.4rem]" data-count="696">696</span>
+          <span class="mt-2 text-[13px] font-bold leading-tight sm:text-sm">photos<br>publiées</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-8">
+      <h3 class="sr-only">Événements couverts</h3>
+      <ol class="border-t-2 border-noir" data-peek-list>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-1225">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">Les Mardis du BTP</span><span class="mt-1 hidden text-sm text-gris lg:block">Table ronde de haut niveau, Hôtel NOOM</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Avril 2026<span class="lg:hidden"> · Forum</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Forum</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c2-272">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">NP Show Culture</span><span class="mt-1 hidden text-sm text-gris lg:block">1re édition, scène de nuit</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Janvier 2026<span class="lg:hidden"> · Culture</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Culture</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-1136">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">FII Sénégal 2025</span><span class="mt-1 hidden text-sm text-gris lg:block">Forum d'investissement, CICAD</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Octobre 2025<span class="lg:hidden"> · Forum</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Forum</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-1195">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">G20 Conference in West Africa</span><span class="mt-1 hidden text-sm text-gris lg:block">Noom Hotel Dakar Sea Plaza</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Octobre 2025<span class="lg:hidden"> · Forum</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Forum</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-444">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">BAL 2025</span><span class="mt-1 hidden text-sm text-gris lg:block">Match de basketball, Dakar</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Mai 2025<span class="lg:hidden"> · Sport</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Sport</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-478">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">Tiken Jah Facoly</span><span class="mt-1 hidden text-sm text-gris lg:block">Concert au CICES, Dakar</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Mai 2025<span class="lg:hidden"> · Culture</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Culture</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-588">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">Salon international de l'habitat</span><span class="mt-1 hidden text-sm text-gris lg:block">5e édition et 1er Symposium des architectes africains, CICAD</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Mai 2025<span class="lg:hidden"> · Forum</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Forum</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-703">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">10 km de Dakar</span><span class="mt-1 hidden text-sm text-gris lg:block">La Foulée de la Teranga, corniche</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Mai 2025<span class="lg:hidden"> · Sport</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Sport</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-258">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">65 ans de l'Indépendance</span><span class="mt-1 hidden text-sm text-gris lg:block">Défilé du 4 avril, Dakar</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Avril 2025<span class="lg:hidden"> · Institutionnel</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Institutionnel</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-285">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">SPACEBUS'2025</span><span class="mt-1 hidden text-sm text-gris lg:block">Caravane nationale de l'espace</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Avril 2025<span class="lg:hidden"> · Institutionnel</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Institutionnel</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-350">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">Lancement du PROVES</span><span class="mt-1 hidden text-sm text-gris lg:block">Programme de verdissement des écoles du Sénégal</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Avril 2025<span class="lg:hidden"> · Institutionnel</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Institutionnel</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-221">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">Senegal Expo Osaka 2025</span><span class="mt-1 hidden text-sm text-gris lg:block">Rencontre officielle MINCOM et ASEPEX</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Mars 2025<span class="lg:hidden"> · Institutionnel</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Institutionnel</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+        <li><a href="#travaux" class="row group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 border-b-2 border-ligne py-4 lg:grid-cols-[8rem_1fr_8rem_auto] lg:py-5" data-peek="c1-14">
+          <span class="lg:col-start-2 lg:row-start-1"><span class="block font-display text-[1.05rem] font-semibold leading-tight tracking-[-0.02em] lg:text-[clamp(1.15rem,1.6vw,1.45rem)]">Opération 1.000.000 arbres</span><span class="mt-1 hidden text-sm text-gris lg:block">Reboisement de la mangrove</span></span>
+          <span class="text-sm font-medium text-gris lg:col-start-1 lg:row-start-1">Novembre 2024<span class="lg:hidden"> · Institutionnel</span></span>
+          <span class="hidden text-sm font-bold lg:col-start-3 lg:row-start-1 lg:block">Institutionnel</span>
+          <span class="row-go col-start-2 row-span-2 row-start-1 grid size-11 place-items-center rounded-full border-2 border-noir transition-all duration-300 lg:col-start-4 lg:row-span-1" aria-hidden="true"><svg class="size-4"><use href="#i-arrow"/></svg></span>
+        </a></li>
+      </ol>
+      <p class="mt-6 text-[15px] leading-relaxed text-gris">Et aussi : <a href="#travaux" class="font-semibold text-noir underline decoration-jaune decoration-2 underline-offset-4 hover:decoration-noir">réunion de coordination du CEFE</a>, <a href="#travaux" class="font-semibold text-noir underline decoration-jaune decoration-2 underline-offset-4 hover:decoration-noir">permanence du syndicat SPEBTPS</a>, <a href="#travaux" class="font-semibold text-noir underline decoration-jaune decoration-2 underline-offset-4 hover:decoration-noir">film Eden Lodge Desert Camp</a>.</p>
+    </div>
+  </div>
+  <div class="peek pointer-events-none fixed left-0 top-0 z-30 size-56 overflow-hidden rounded-full bg-noir opacity-0 ring-8 ring-jaune" aria-hidden="true" data-peek-follower></div>
+</section>
+
+<!-- ============ EXPERTISES : LE DEUXIÈME CHAMP JAUNE ============ -->
+<section id="expertises" class="px-3 md:px-4" aria-labelledby="expertises-titre">
+  <div class="mx-auto max-w-[1440px] rounded-[2rem] bg-jaune px-5 py-16 md:px-10 lg:rounded-[2.75rem] lg:px-14 lg:py-24">
+    <div class="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-6" data-reveal>
+      <div class="lg:col-span-7">
+        <p class="inline-flex items-center gap-2 text-sm font-bold"><span class="size-2.5 rounded-full bg-noir" aria-hidden="true"></span>Expertises</p>
+        <h2 id="expertises-titre" class="mt-5 font-display text-[clamp(2.4rem,6vw,5.4rem)] font-black leading-[.95] tracking-[-0.04em]">
+          Photo<span class="dot" aria-hidden="true"></span><br>Vidéo<span class="dot" aria-hidden="true"></span><br>Digital<span class="dot" aria-hidden="true"></span>
+        </h2>
+      </div>
+      <p class="max-w-md text-lg font-medium leading-relaxed lg:col-span-5 lg:justify-self-end">COM'DIGITAL 360 : les trois métiers sur le même événement. Une seule équipe à briefer, des images qui se répondent du début à la fin.</p>
+    </div>
+
+    <div class="mt-12 grid gap-4 lg:mt-16 lg:grid-cols-12 lg:grid-rows-[auto_auto] lg:gap-5">
+      <!-- Photo -->
+      <article class="rounded-[1.75rem] bg-white p-6 lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:p-8" data-reveal>
+        <div class="flex items-center gap-5 lg:gap-7">
+          <div class="aspect-square w-28 shrink-0 overflow-hidden rounded-full bg-brume ring-4 ring-noir lg:w-40">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_320/sowdigital/c1-1269"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_240/sowdigital/c1-1269 240w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_320/sowdigital/c1-1269 320w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_480/sowdigital/c1-1269 480w"
+              sizes="(min-width: 1024px) 160px, 112px" width="320" height="320" loading="lazy" decoding="async" class="h-full w-full object-cover"
+              alt="Une femme en turban violet, lunettes et boubou assorti éclate de rire, cadrée en gros plan vertical sur un fond clair.">
+          </div>
+          <div>
+            <span class="rounded-full bg-noir px-3 py-1 font-display text-sm font-bold text-white">01</span>
+            <h3 class="mt-3 font-display text-4xl font-black tracking-[-0.03em] lg:text-5xl">Photo<span class="dot dot-j" aria-hidden="true"></span></h3>
+          </div>
+        </div>
+        <p class="mt-5 text-[17px] leading-relaxed">Reportage d'événement, portraits officiels, photo de famille. Des images prêtes pour la presse, vos rapports et vos réseaux.</p>
+      </article>
+
+      <!-- Vidéo -->
+      <article class="on-dark flex flex-col rounded-[1.75rem] bg-noir p-5 text-white lg:col-span-7 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:p-8" data-reveal style="--d:100ms">
+        <div class="flex items-center justify-between">
+          <span class="rounded-full bg-jaune px-3 py-1 font-display text-sm font-bold text-noir">02</span>
+          <span class="text-sm font-bold text-white/80">Film et format court</span>
+        </div>
+        <div class="relative mt-6 lg:mt-8 lg:flex-1">
+          <div class="video-frame relative aspect-[16/10] overflow-hidden rounded-[1.5rem] bg-encre lg:aspect-[2/1] lg:rounded-full" data-video
+               data-loop="https://res.cloudinary.com/ddq9ydouz/video/upload/so_89,eo_99,ac_none/c_crop,y_0.16,h_0.68,w_1.0/c_fill,ar_2,w_960/q_auto:eco,vc_h264/sowdigital/video/c1-928.mp4"
+               data-src="https://res.cloudinary.com/ddq9ydouz/video/upload/q_auto,vc_h264,c_limit,w_1280/sowdigital/video/c1-928.mp4">
+            <video class="absolute inset-0 h-full w-full object-cover" muted loop playsinline preload="none" aria-hidden="true"
+              poster="https://res.cloudinary.com/ddq9ydouz/video/upload/so_89/c_crop,y_0.16,h_0.68,w_1.0/c_fill,ar_2,w_960/f_auto,q_auto/sowdigital/video/c1-928.jpg"></video>
+          </div>
+          <div class="absolute bottom-3 left-3 lg:bottom-0 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2" data-video-play-wrap>
+          <button type="button" class="group inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-full bg-jaune py-1.5 pl-1.5 pr-5 font-bold text-noir ring-4 ring-noir transition-transform hover:-translate-y-0.5" data-video-play>
+            <span class="grid size-10 place-items-center rounded-full bg-noir text-jaune transition-transform group-hover:scale-110"><svg class="ml-0.5 size-4" aria-hidden="true"><use href="#i-play"/></svg></span>
+            Lire le film <span class="font-medium">· 7 min 49</span>
+          </button>
+          </div>
+        </div>
+        <div class="mt-6 lg:mt-12">
+          <h3 class="font-display text-4xl font-black tracking-[-0.03em] text-jaune lg:text-6xl">Vidéo<span class="dot dot-w" aria-hidden="true"></span></h3>
+          <p class="mt-3 max-w-xl text-[17px] leading-relaxed text-white/85">Film récap, film promotionnel, interview, format vertical pour les réseaux. Montés pour être vus jusqu'au bout. Ici, le récap des 10 km de Dakar.</p>
+        </div>
+      </article>
+
+      <!-- Digital -->
+      <article class="rounded-[1.75rem] border-2 border-noir p-6 lg:col-span-5 lg:col-start-8 lg:row-start-2 lg:p-8" data-reveal style="--d:200ms">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="rounded-full bg-noir px-3 py-1 font-display text-sm font-bold text-white">03</span>
+            <h3 class="mt-3 font-display text-4xl font-black tracking-[-0.03em] lg:text-5xl">Digital<span class="dot" aria-hidden="true"></span></h3>
+          </div>
+          <span class="grid size-16 shrink-0 place-items-center rounded-full bg-noir font-display text-base font-black text-jaune lg:size-20 lg:text-lg">360</span>
+        </div>
+        <ul class="mt-6 grid grid-cols-5 gap-2" aria-label="Exemples de formats pour les réseaux">
+          <li class="aspect-square overflow-hidden rounded-[.9rem] bg-brume"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c1-689" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_120/sowdigital/c1-689 120w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c1-689 200w" sizes="(min-width: 1024px) 90px, 18vw" width="200" height="200" loading="lazy" decoding="async" class="h-full w-full object-cover" alt="Gros plan sur un artiste au visage peint en jaune et blanc, coiffé de plumes et paré de cauris, venu animer la course."></li>
+          <li class="aspect-square overflow-hidden rounded-full bg-brume"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c1-258" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_120/sowdigital/c1-258 120w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c1-258 200w" sizes="(min-width: 1024px) 90px, 18vw" width="200" height="200" loading="lazy" decoding="async" class="h-full w-full object-cover" alt="Un garde d'honneur en tunique rouge et chéchia tient un fusil à baïonnette lors d'un défilé officiel"></li>
+          <li class="aspect-square overflow-hidden rounded-[.9rem] bg-brume"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c1-272" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_120/sowdigital/c1-272 120w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c1-272 200w" sizes="(min-width: 1024px) 90px, 18vw" width="200" height="200" loading="lazy" decoding="async" class="h-full w-full object-cover" alt="Deux personnalités officielles en boubou et calot échangent avec le sourire lors d'une cérémonie en plein air ensoleillée."></li>
+          <li class="aspect-square overflow-hidden rounded-full bg-brume"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c2-399" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_120/sowdigital/c2-399 120w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c2-399 200w" sizes="(min-width: 1024px) 90px, 18vw" width="200" height="200" loading="lazy" decoding="async" class="h-full w-full object-cover" alt="Une participante en foulard rose, lunettes et casquette CSFP-BTP sourit largement, assise parmi d'autres participants."></li>
+          <li class="aspect-square overflow-hidden rounded-[.9rem] bg-brume"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c1-863" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_120/sowdigital/c1-863 120w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_200/sowdigital/c1-863 200w" sizes="(min-width: 1024px) 90px, 18vw" width="200" height="200" loading="lazy" decoding="async" class="h-full w-full object-cover" alt="Un coureur en débardeur noir, dossard 8152, sourit en négociant un virage, d'autres coureurs au loin"></li>
+        </ul>
+        <p class="mt-5 text-[17px] leading-relaxed">Vos images déclinées pour Instagram, Facebook et votre site, au format de chaque canal.</p>
+      </article>
+    </div>
+
+    <!-- Terrains -->
+    <div class="mt-20 grid gap-10 lg:mt-28 lg:grid-cols-12 lg:items-center lg:gap-6" data-tabs>
+      <div class="lg:col-span-5" data-reveal>
+        <p class="inline-flex items-center gap-2 text-sm font-bold"><span class="size-2.5 rounded-full bg-noir" aria-hidden="true"></span>Terrains</p>
+        <h3 class="mt-5 font-display text-[clamp(2rem,4vw,3.4rem)] font-black leading-[1] tracking-[-0.035em]">Du protocole à&nbsp;la&nbsp;scène<span class="dot" aria-hidden="true"></span></h3>
+        <div role="tablist" aria-label="Terrains couverts" class="mt-8 flex flex-wrap gap-2 lg:flex-col lg:gap-1.5">
+          <button type="button" role="tab" id="tab-inst" aria-controls="tp-inst" aria-selected="true" class="inline-flex min-h-11 items-center gap-3 rounded-full border-2 border-noir px-4 py-2 text-left font-semibold transition-colors hover:bg-noir/10 aria-selected:bg-noir aria-selected:text-jaune lg:w-full lg:justify-between lg:border-0 lg:px-6 lg:py-4 lg:font-display lg:text-2xl lg:font-bold">
+            Institutionnel <span class="hidden size-3 rounded-full bg-current lg:block" aria-hidden="true"></span>
+          </button>
+          <button type="button" role="tab" id="tab-forum" aria-controls="tp-forum" aria-selected="false" tabindex="-1" class="inline-flex min-h-11 items-center gap-3 rounded-full border-2 border-noir px-4 py-2 text-left font-semibold transition-colors hover:bg-noir/10 aria-selected:bg-noir aria-selected:text-jaune lg:w-full lg:justify-between lg:border-0 lg:px-6 lg:py-4 lg:font-display lg:text-2xl lg:font-bold">
+            Forums et sommets <span class="hidden size-3 rounded-full bg-current lg:block" aria-hidden="true"></span>
+          </button>
+          <button type="button" role="tab" id="tab-sport" aria-controls="tp-sport" aria-selected="false" tabindex="-1" class="inline-flex min-h-11 items-center gap-3 rounded-full border-2 border-noir px-4 py-2 text-left font-semibold transition-colors hover:bg-noir/10 aria-selected:bg-noir aria-selected:text-jaune lg:w-full lg:justify-between lg:border-0 lg:px-6 lg:py-4 lg:font-display lg:text-2xl lg:font-bold">
+            Sport <span class="hidden size-3 rounded-full bg-current lg:block" aria-hidden="true"></span>
+          </button>
+          <button type="button" role="tab" id="tab-culture" aria-controls="tp-culture" aria-selected="false" tabindex="-1" class="inline-flex min-h-11 items-center gap-3 rounded-full border-2 border-noir px-4 py-2 text-left font-semibold transition-colors hover:bg-noir/10 aria-selected:bg-noir aria-selected:text-jaune lg:w-full lg:justify-between lg:border-0 lg:px-6 lg:py-4 lg:font-display lg:text-2xl lg:font-bold">
+            Culture <span class="hidden size-3 rounded-full bg-current lg:block" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 lg:col-start-6 lg:pl-6" data-reveal style="--d:120ms">
+        <div role="tabpanel" id="tp-inst" aria-labelledby="tab-inst" class="tab-panel" tabindex="0">
+          <div class="d-133 relative aspect-[4/3] overflow-hidden bg-noir">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_960/sowdigital/c1-274"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_640/sowdigital/c1-274 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_960/sowdigital/c1-274 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_1280/sowdigital/c1-274 1280w"
+              sizes="(min-width: 1440px) 700px, (min-width: 1024px) 50vw, 92vw" width="960" height="720" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Une personnalité officielle en boubou bleu guide un invité en tenue blanche et toque brodée vers une berline officielle.">
+          </div>
+          <p class="mt-5 text-[17px] font-medium leading-relaxed">Cérémonies officielles, accueils protocolaires, lancements de programmes.</p>
+          <ul class="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">65 ans de l'Indépendance</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">Senegal Expo Osaka 2025</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">Lancement du PROVES</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">SPACEBUS'2025</a></li>
+          </ul>
+        </div>
+        <div role="tabpanel" id="tp-forum" aria-labelledby="tab-forum" class="tab-panel" tabindex="0" hidden>
+          <div class="d-133 relative aspect-[4/3] overflow-hidden bg-noir">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_960/sowdigital/c1-538"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_640/sowdigital/c1-538 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_960/sowdigital/c1-538 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_1120/sowdigital/c1-538 1120w"
+              sizes="(min-width: 1440px) 700px, (min-width: 1024px) 50vw, 92vw" width="960" height="720" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Un orateur parle au pupitre tandis que le panel siège devant le backdrop de la Chambre de Commerce de Dakar, face au public.">
+          </div>
+          <p class="mt-5 text-[17px] font-medium leading-relaxed">Plénières, panels, salles combles, photos de groupe.</p>
+          <ul class="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">FII Sénégal 2025</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">G20 Conference in West Africa</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">Les Mardis du BTP</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">Panel de la CCIAD</a></li>
+          </ul>
+        </div>
+        <div role="tabpanel" id="tp-sport" aria-labelledby="tab-sport" class="tab-panel" tabindex="0" hidden>
+          <div class="d-133 relative aspect-[4/3] overflow-hidden bg-noir">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_960/sowdigital/c1-444"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_640/sowdigital/c1-444 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_960/sowdigital/c1-444 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_1120/sowdigital/c1-444 1120w"
+              sizes="(min-width: 1440px) 700px, (min-width: 1024px) 50vw, 92vw" width="960" height="720" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Vue en hauteur d'une arène de basket comble, parquet illuminé et écran géant, pendant un match de la BAL 2025.">
+          </div>
+          <p class="mt-5 text-[17px] font-medium leading-relaxed">Matchs, courses, podiums, l'ambiance des tribunes.</p>
+          <ul class="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">BAL 2025</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">10 km de Dakar</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">Celebrity Game BAL</a></li>
+          </ul>
+        </div>
+        <div role="tabpanel" id="tp-culture" aria-labelledby="tab-culture" class="tab-panel" tabindex="0" hidden>
+          <div class="d-133 relative aspect-[4/3] overflow-hidden bg-noir">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_960/sowdigital/c1-478"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_640/sowdigital/c1-478 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_960/sowdigital/c1-478 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_1130/sowdigital/c1-478 1130w"
+              sizes="(min-width: 1440px) 700px, (min-width: 1024px) 50vw, 92vw" width="960" height="720" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="L'artiste sourit en chantant au micro, main ouverte, devant les projecteurs rouges et orange de la scène du CICES.">
+          </div>
+          <p class="mt-5 text-[17px] font-medium leading-relaxed">Concerts, défilés de mode, spectacles de nuit.</p>
+          <ul class="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">Tiken Jah Facoly au CICES</a></li>
+            <li><a href="#travaux" class="inline-flex min-h-11 items-center rounded-full bg-white px-4 transition-colors hover:bg-noir hover:text-white">NP Show Culture</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MÉTHODE : LA SÉQUENCE COMPLÈTE ============ -->
+<section id="methode" class="mt-3 px-3 md:px-4" aria-labelledby="methode-titre">
+  <div class="on-dark mx-auto max-w-[1440px] overflow-hidden rounded-[2rem] bg-noir px-5 py-16 text-white md:px-10 lg:rounded-[2.75rem] lg:px-14 lg:py-24">
+    <div class="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-6" data-reveal>
+      <div class="lg:col-span-8">
+        <p class="inline-flex items-center gap-2 text-sm font-bold text-white/85"><span class="size-2.5 rounded-full bg-jaune" aria-hidden="true"></span>Méthode</p>
+        <h2 id="methode-titre" class="mt-5 font-display text-[clamp(2.05rem,5.2vw,4.8rem)] font-black leading-[.95] tracking-[-0.04em]">Un&nbsp;événement,<br>six temps<span class="dot dot-j" aria-hidden="true"></span></h2>
+      </div>
+      <p class="max-w-md text-lg leading-relaxed text-white/75 lg:col-span-4 lg:justify-self-end">On couvre chaque moment dans l'ordre où il arrive. Les six images viennent du même événement : Les Mardis du BTP, Hôtel NOOM, avril 2026.</p>
+    </div>
+
+    <div class="seq no-scrollbar relative -mx-5 mt-12 snap-x snap-mandatory overflow-x-auto scroll-px-5 px-5 pb-2 md:-mx-10 md:scroll-px-10 md:px-10 lg:mx-0 lg:mt-20 lg:overflow-visible lg:px-0 lg:pb-0" data-seq>
+    <div class="relative w-max lg:w-auto">
+    <div class="seq-line pointer-events-none absolute left-7 right-7 top-[25px] h-1.5 rounded-full bg-jaune" aria-hidden="true"></div>
+    <ol class="relative flex gap-4 lg:grid lg:grid-cols-6 lg:gap-5">
+      <li class="relative w-[min(74vw,19rem)] shrink-0 snap-start lg:w-auto">
+        <span class="num relative z-10 grid size-14 place-items-center rounded-full bg-jaune font-display text-base font-black text-noir ring-8 ring-noir" style="--d:100ms">01</span>
+        <div class="mt-7">
+          <div class="arch relative aspect-[4/5] overflow-hidden bg-encre">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1258"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_320/sowdigital/c1-1258 320w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1258 480w"
+              sizes="(min-width: 1024px) 200px, 304px" width="480" height="600" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Un groupe d'hommes en costume et en chemise marche en extérieur sous le soleil, dossiers à la main, à l'arrivée d'une rencontre.">
+          </div>
+          <h3 class="mt-4 font-display text-lg font-bold leading-tight">Arrivée des officiels</h3>
+          <p class="mt-2 text-[15px] leading-relaxed text-white/70">Accueil, protocole, premières poignées de main. On est en place avant les premières voitures.</p>
+        </div>
+      </li>
+      <li class="relative w-[min(74vw,19rem)] shrink-0 snap-start lg:w-auto">
+        <span class="num relative z-10 grid size-14 place-items-center rounded-full bg-jaune font-display text-base font-black text-noir ring-8 ring-noir" style="--d:250ms">02</span>
+        <div class="mt-7">
+          <div class="arch relative aspect-[4/5] overflow-hidden bg-encre">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1228"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_320/sowdigital/c1-1228 320w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1228 480w"
+              sizes="(min-width: 1024px) 200px, 304px" width="480" height="600" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Une intervenante en voile noir et tenue rose lit son discours au pupitre des Mardis du BTP, à l'Hôtel NOOM de Dakar.">
+          </div>
+          <h3 class="mt-4 font-display text-lg font-bold leading-tight">Allocutions</h3>
+          <p class="mt-2 text-[15px] leading-relaxed text-white/70">Chaque prise de parole au pupitre, nette, avec la banderole lisible.</p>
+        </div>
+      </li>
+      <li class="relative w-[min(74vw,19rem)] shrink-0 snap-start lg:w-auto">
+        <span class="num relative z-10 grid size-14 place-items-center rounded-full bg-jaune font-display text-base font-black text-noir ring-8 ring-noir" style="--d:400ms">03</span>
+        <div class="mt-7">
+          <div class="arch relative aspect-[4/5] overflow-hidden bg-encre">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1263"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_320/sowdigital/c1-1263 320w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1263 480w"
+              sizes="(min-width: 1024px) 200px, 304px" width="480" height="600" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Sur scène, un intervenant en tenue sombre parle au micro tandis qu'une panéliste en boubou violet prend des notes à ses côtés.">
+          </div>
+          <h3 class="mt-4 font-display text-lg font-bold leading-tight">Panels</h3>
+          <p class="mt-2 text-[15px] leading-relaxed text-white/70">Les intervenants, leurs réactions, les notes prises. Ce qui se dit et ce qui se joue à côté.</p>
+        </div>
+      </li>
+      <li class="relative w-[min(74vw,19rem)] shrink-0 snap-start lg:w-auto">
+        <span class="num relative z-10 grid size-14 place-items-center rounded-full bg-jaune font-display text-base font-black text-noir ring-8 ring-noir" style="--d:550ms">04</span>
+        <div class="mt-7">
+          <div class="arch relative aspect-[4/5] overflow-hidden bg-encre">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1244"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_320/sowdigital/c1-1244 320w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1244 480w"
+              sizes="(min-width: 1024px) 200px, 304px" width="480" height="600" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Dans le public assis, un homme lève son smartphone pour photographier la scène pendant la table ronde.">
+          </div>
+          <h3 class="mt-4 font-display text-lg font-bold leading-tight">La salle</h3>
+          <p class="mt-2 text-[15px] leading-relaxed text-white/70">Le public, l'affluence, les téléphones levés. La preuve que l'événement a porté.</p>
+        </div>
+      </li>
+      <li class="relative w-[min(74vw,19rem)] shrink-0 snap-start lg:w-auto">
+        <span class="num relative z-10 grid size-14 place-items-center rounded-full bg-jaune font-display text-base font-black text-noir ring-8 ring-noir" style="--d:700ms">05</span>
+        <div class="mt-7">
+          <div class="arch relative aspect-[4/5] overflow-hidden bg-encre">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1253"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_320/sowdigital/c1-1253 320w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1253 480w"
+              sizes="(min-width: 1024px) 200px, 304px" width="480" height="600" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Deux personnalités en costume répondent aux micros tendus de la presse devant le panneau des Mardis du BTP.">
+          </div>
+          <h3 class="mt-4 font-display text-lg font-bold leading-tight">Point presse</h3>
+          <p class="mt-2 text-[15px] leading-relaxed text-white/70">Micros tendus, caméras, déclarations à chaud devant le panneau.</p>
+        </div>
+      </li>
+      <li class="relative w-[min(74vw,19rem)] shrink-0 snap-start lg:w-auto">
+        <span class="num relative z-10 grid size-14 place-items-center rounded-full bg-jaune font-display text-base font-black text-noir ring-8 ring-noir" style="--d:850ms">06</span>
+        <div class="mt-7">
+          <div class="arch relative aspect-[4/5] overflow-hidden bg-encre">
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1267"
+              srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_320/sowdigital/c1-1267 320w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1267 480w"
+              sizes="(min-width: 1024px) 200px, 304px" width="480" height="600" loading="lazy" decoding="async" class="absolute inset-0 h-full w-full object-cover"
+              alt="Un homme souriant en tenue blanche et lunettes bleutées discute avec un invité en costume lors d'un moment d'échange en salle.">
+          </div>
+          <h3 class="mt-4 font-display text-lg font-bold leading-tight">Échanges</h3>
+          <p class="mt-2 text-[15px] leading-relaxed text-white/70">Les apartés, les sourires. Puis la photo de famille, pour finir.</p>
+        </div>
+      </li>
+    </ol>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STUDIO ============ -->
+<section id="studio" class="mx-auto max-w-[1440px] px-4 py-20 md:px-6 lg:px-10 lg:py-32" aria-labelledby="studio-titre">
+  <div class="grid items-center gap-14 lg:grid-cols-12 lg:gap-6">
+    <div class="relative mx-auto w-full max-w-[26rem] lg:col-span-5 lg:max-w-none" data-reveal>
+      <div class="relative mx-auto aspect-[1/1.12] w-full lg:w-[88%]">
+        <div class="absolute right-0 top-0 aspect-square w-[66%] rounded-full bg-jaune" aria-hidden="true"></div>
+        <div class="arch absolute bottom-0 left-[12%] w-[68%] overflow-hidden bg-brume" style="aspect-ratio:1353/1895">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_720/media/team/fallou_sow"
+            srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_480/media/team/fallou_sow 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_720/media/team/fallou_sow 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_960/media/team/fallou_sow 960w"
+            sizes="(min-width: 1024px) 380px, 68vw" width="720" height="1008" loading="lazy" decoding="async" class="h-full w-full object-cover"
+            alt="Portrait de Fallou Sow, fondateur et directeur créatif de SowDigital">
+        </div>
+        <div class="absolute bottom-[6%] left-[2%] size-10 rounded-full bg-jaune ring-4 ring-white lg:size-12" aria-hidden="true"></div>
+        <p class="absolute right-[2%] top-[58%] rounded-full bg-noir px-4 py-2.5 text-sm font-bold text-white shadow-[0_10px_30px_rgba(0,0,0,.18)]">Fallou Sow <span class="font-medium text-white/70">· fondateur</span></p>
+      </div>
+    </div>
+
+    <div class="lg:col-span-6 lg:col-start-7" data-reveal style="--d:120ms">
+      <p class="inline-flex items-center gap-2 text-sm font-bold"><span class="size-2.5 rounded-full bg-jaune ring-2 ring-noir" aria-hidden="true"></span>Le studio</p>
+      <h2 id="studio-titre" class="mt-5 font-display text-[clamp(2.2rem,4.8vw,4.3rem)] font-black leading-[.98] tracking-[-0.04em]">Le regard de Fallou Sow<span class="dot dot-j" aria-hidden="true"></span></h2>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-gris">Fallou Sow a fondé SowDigital à Dakar et en signe la direction créative. Le studio travaille pour des ministères, la Présidence de la République, des ONG et des entreprises.</p>
+      <ul class="mt-10 divide-y-2 divide-ligne border-y-2 border-ligne">
+        <li class="flex flex-col gap-2 py-5 sm:flex-row sm:items-center sm:gap-6">
+          <span class="w-fit shrink-0 rounded-full bg-jaune px-3.5 py-1.5 text-sm font-bold sm:w-36 sm:text-center">Décembre 2024</span>
+          <span class="text-[17px] font-semibold">Invité de l'émission Miroir du Sénégal, sur la TFM</span>
+        </li>
+        <li class="flex flex-col gap-2 py-5 sm:flex-row sm:items-center sm:gap-6">
+          <span class="w-fit shrink-0 rounded-full bg-jaune px-3.5 py-1.5 text-sm font-bold sm:w-36 sm:text-center">Avril 2025</span>
+          <span class="text-[17px] font-semibold">Week-End Numérique à Malicounda, formation et ateliers</span>
+        </li>
+        <li class="flex flex-col gap-2 py-5 sm:flex-row sm:items-center sm:gap-6">
+          <span class="w-fit shrink-0 rounded-full bg-jaune px-3.5 py-1.5 text-sm font-bold sm:w-36 sm:text-center">Octobre 2025</span>
+          <span class="text-[17px] font-semibold">Masterclass photo</span>
+        </li>
+      </ul>
+      <a href="#studio" class="group mt-10 inline-flex min-h-12 items-center gap-3 rounded-full border-2 border-noir px-6 font-bold transition-colors hover:bg-noir hover:text-white">
+        Découvrir le studio <svg class="size-5 transition-transform group-hover:translate-x-1" aria-hidden="true"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="px-3 md:px-4" aria-labelledby="contact-titre">
+  <div class="on-dark relative mx-auto max-w-[1440px] overflow-hidden rounded-[2rem] bg-noir px-5 pb-44 pt-16 text-white md:px-10 md:pb-52 lg:rounded-[2.75rem] lg:px-14 lg:py-28">
+    <div class="pointer-events-none absolute -bottom-24 -right-16 size-[16rem] rounded-full border-[2.2rem] border-jaune md:-bottom-32 md:-right-20 md:size-[24rem] md:border-[3rem] lg:-bottom-40 lg:-right-24 lg:size-[38rem] lg:border-[4.5rem]" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute bottom-[4.5rem] right-[13.5rem] hidden size-10 rounded-full bg-jaune lg:block" aria-hidden="true"></div>
+    <div class="relative max-w-5xl" data-reveal>
+      <p class="inline-flex items-center gap-2 text-sm font-bold text-white/85"><span class="size-2.5 rounded-full bg-jaune" aria-hidden="true"></span>Contact</p>
+      <h2 id="contact-titre" class="mt-5 font-display text-[clamp(2.1rem,6.4vw,6.2rem)] font-black leading-[.92] tracking-[-0.045em] text-jaune">Un&nbsp;événement<br>à couvrir&#8239;?</h2>
+      <p class="mt-7 max-w-xl text-lg leading-relaxed text-white/80 lg:text-xl">Envoyez la date, le lieu et le programme sur WhatsApp. On revient vers vous avec une proposition de couverture.</p>
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <a href="https://wa.me/221773718484" target="_blank" rel="noopener" class="group inline-flex min-h-16 items-center justify-center gap-3 rounded-full bg-jaune px-8 text-lg font-bold text-noir transition-transform hover:-translate-y-1">
+          <svg class="size-6" aria-hidden="true"><use href="#i-wa"/></svg> Écrire sur WhatsApp
+          <svg class="size-5 transition-transform group-hover:translate-x-1" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
+        <a href="tel:+221773718484" class="inline-flex min-h-16 items-center justify-center gap-3 rounded-full border-2 border-white/35 px-7 text-base font-bold transition-colors hover:border-white hover:bg-white hover:text-noir">
+          <svg class="size-5" aria-hidden="true"><use href="#i-phone"/></svg> +221 77 371 84 84
+        </a>
+      </div>
+      <p class="mt-6 text-base text-white/70">Ou par e-mail : <a href="mailto:fallou@groupe-sowdigital.com" class="inline-flex min-h-11 items-center font-semibold text-white underline decoration-jaune decoration-2 underline-offset-4 hover:decoration-white">fallou@groupe-sowdigital.com</a></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ PIED DE PAGE ============ -->
+<footer class="mx-auto max-w-[1440px] px-4 pb-10 pt-16 md:px-6 lg:px-10 lg:pt-20">
+  <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-6">
+    <div class="sm:col-span-2 lg:col-span-5">
+      <img src="../brand/logo-dark.png" width="720" height="103" alt="SowDigital" loading="lazy" class="h-8 w-auto lg:h-9">
+      <p class="mt-5 max-w-sm text-[17px] leading-relaxed text-gris">Photo, vidéo et communication digitale. Forums, sommets, cérémonies officielles, sport et culture. Dakar, Sénégal.</p>
+    </div>
+    <nav aria-label="Pied de page" class="lg:col-span-2">
+      <h2 class="text-sm font-bold text-gris">Navigation</h2>
+      <ul class="mt-3 font-semibold">
+        <li><a href="#travaux" class="inline-flex min-h-11 items-center hover:underline hover:decoration-jaune hover:decoration-[3px] hover:underline-offset-4">Travaux</a></li>
+        <li><a href="#expertises" class="inline-flex min-h-11 items-center hover:underline hover:decoration-jaune hover:decoration-[3px] hover:underline-offset-4">Expertises</a></li>
+        <li><a href="#studio" class="inline-flex min-h-11 items-center hover:underline hover:decoration-jaune hover:decoration-[3px] hover:underline-offset-4">Studio</a></li>
+        <li><a href="#contact" class="inline-flex min-h-11 items-center hover:underline hover:decoration-jaune hover:decoration-[3px] hover:underline-offset-4">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="lg:col-span-3">
+      <h2 class="text-sm font-bold text-gris">Contact</h2>
+      <ul class="mt-3 font-semibold">
+        <li><a href="https://wa.me/221773718484" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-2 hover:underline hover:decoration-jaune hover:decoration-[3px] hover:underline-offset-4"><svg class="size-4" aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a></li>
+        <li><a href="tel:+221773718484" class="inline-flex min-h-11 items-center hover:underline hover:decoration-jaune hover:decoration-[3px] hover:underline-offset-4">+221 77 371 84 84</a></li>
+        <li><a href="mailto:fallou@groupe-sowdigital.com" class="inline-flex min-h-11 items-center break-all hover:underline hover:decoration-jaune hover:decoration-[3px] hover:underline-offset-4">fallou@groupe-sowdigital.com</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <h2 class="text-sm font-bold text-gris">Réseaux</h2>
+      <ul class="mt-3 flex flex-wrap gap-2 font-semibold lg:flex-col lg:items-start">
+        <li><a href="https://www.instagram.com/sowdigital221" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center rounded-full border-2 border-noir px-4 transition-colors hover:bg-jaune">Instagram</a></li>
+        <li><a href="https://www.facebook.com/sowdigitalsenegal" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center rounded-full border-2 border-noir px-4 transition-colors hover:bg-jaune">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mt-14 flex flex-col gap-4 border-t-2 border-ligne pt-6 text-sm text-gris sm:flex-row sm:items-center sm:justify-between">
+    <p>© 2026 Groupe SowDigital · Dakar, Sénégal</p>
+    <div class="flex items-center gap-2">
+      <a href="#contact" class="inline-flex min-h-11 items-center px-2 font-semibold hover:text-noir">Mentions légales</a>
+      <a href="#haut" class="inline-flex min-h-11 items-center gap-2 rounded-full bg-brume px-4 font-semibold text-noir transition-colors hover:bg-jaune">Haut de page <svg class="size-4 -rotate-90" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const d = document, root = d.documentElement;
+  root.classList.add('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
+  const io = (cb, opts) => new IntersectionObserver(cb, opts);
+
+  /* Ouverture : le titre monte, la fenêtre glisse */
+  const ready = () => root.classList.add('is-ready');
+  Promise.race([d.fonts ? d.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 700))]).then(() => requestAnimationFrame(ready));
+
+  /* En-tête : filet après le premier scroll */
+  const header = d.querySelector('[data-header]');
+  const onScroll = () => header.classList.toggle('shadow-[0_1px_0_#E4E4E4]', scrollY > 8);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* Navigation : la section en cours prend le jaune */
+  const navLinks = [...d.querySelectorAll('[data-nav] a')];
+  const spy = io(entries => entries.forEach(en => {
+    const link = navLinks.find(a => a.hash === '#' + en.target.id);
+    if (en.isIntersecting) { navLinks.forEach(a => a.removeAttribute('aria-current')); link.setAttribute('aria-current', 'true'); }
+    else if (link.hasAttribute('aria-current')) link.removeAttribute('aria-current');
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  navLinks.forEach(a => { const s = d.querySelector(a.hash); if (s) spy.observe(s); });
+
+  /* Menu mobile */
+  const menu = d.getElementById('menu');
+  const openBtn = d.querySelector('[data-menu-open]');
+  const closeBtn = d.querySelector('[data-menu-close]');
+  function openMenu() {
+    menu.classList.replace('hidden', 'flex');
+    openBtn.setAttribute('aria-expanded', 'true');
+    d.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+  function closeMenu(restore = true) {
+    menu.classList.replace('flex', 'hidden');
+    openBtn.setAttribute('aria-expanded', 'false');
+    d.body.style.overflow = '';
+    if (restore) openBtn.focus();
+  }
+  openBtn.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', () => closeMenu());
+  menu.querySelectorAll('[data-menu-link]').forEach(a => a.addEventListener('click', () => closeMenu(false)));
+  menu.addEventListener('keydown', e => {
+    if (e.key === 'Escape') return closeMenu();
+    if (e.key !== 'Tab') return;
+    const f = [...menu.querySelectorAll('a, button')], first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && d.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && d.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+  matchMedia('(min-width: 1024px)').addEventListener('change', e => { if (e.matches && menu.classList.contains('flex')) closeMenu(false); });
+
+  /* Frise de la méthode : focusable au clavier quand elle défile */
+  const seq = d.querySelector('[data-seq]');
+  const seqFocus = () => {
+    const scrolls = seq.scrollWidth > seq.clientWidth + 2;
+    if (scrolls) { seq.tabIndex = 0; seq.setAttribute('role', 'region'); seq.setAttribute('aria-label', "Les six temps d'un événement"); }
+    else ['tabindex', 'role', 'aria-label'].forEach(a => seq.removeAttribute(a));
+  };
+  addEventListener('resize', seqFocus, { passive: true }); seqFocus();
+
+  /* Apparitions au scroll */
+  const revealables = d.querySelectorAll('[data-reveal], [data-seq]');
+  if (!reduce) {
+    const ro = io(entries => entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add('is-in'); ro.unobserve(en.target); }
+    }), { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    revealables.forEach(el => ro.observe(el));
+  } else revealables.forEach(el => el.classList.add('is-in'));
+
+  /* Montage du hero, piloté par le point */
+  const montage = d.getElementById('montage');
+  const slides = [...montage.querySelectorAll('.slide')];
+  const caption = d.querySelector('[data-caption-target]');
+  const ring = d.querySelector('[data-ring]');
+  const toggle = d.querySelector('[data-motion-toggle]');
+  let paused = reduce, current = 0, timer = 0, heroVisible = true, restLoaded = false;
+  root.classList.toggle('is-paused', paused);
+  toggle.setAttribute('aria-pressed', paused);
+
+  const loadRest = () => {
+    if (restLoaded) return; restLoaded = true;
+    montage.querySelectorAll('[data-srcset]').forEach(el => { el.srcset = el.dataset.srcset; el.removeAttribute('data-srcset'); });
+  };
+  const restartRing = () => { ring.classList.remove('ring-run'); ring.getBoundingClientRect(); ring.classList.add('ring-run'); };
+  function show(n) {
+    slides[current].classList.remove('is-on');
+    slides[current].setAttribute('aria-hidden', 'true');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('is-on');
+    slides[current].removeAttribute('aria-hidden');
+    caption.textContent = slides[current].dataset.caption;
+    restartRing();
+  }
+  function syncMontage() {
+    clearInterval(timer); timer = 0;
+    if (paused || !heroVisible || d.hidden) return ring.classList.remove('ring-run');
+    loadRest(); restartRing();
+    timer = setInterval(() => show(current + 1), 5000);
+  }
+  io(([en]) => { heroVisible = en.isIntersecting; syncMontage(); }).observe(montage);
+  d.addEventListener('visibilitychange', syncMontage);
+  addEventListener('load', () => (window.requestIdleCallback || setTimeout)(loadRest));
+
+  /* Boucle vidéo : chargée quand elle entre à l'écran, jamais en mode économie de données */
+  const frame = d.querySelector('[data-video]');
+  const loop = frame.querySelector('video');
+  let loopVisible = false, filmStarted = false;
+  function syncLoop() {
+    if (filmStarted) return;
+    if (paused || saveData || !loopVisible) return loop.pause();
+    if (!loop.src) loop.src = frame.dataset.loop;
+    loop.play().catch(() => {});
+  }
+  io(([en]) => { loopVisible = en.isIntersecting; syncLoop(); }, { threshold: .25 }).observe(frame);
+
+  toggle.addEventListener('click', () => {
+    paused = !paused;
+    root.classList.toggle('is-paused', paused);
+    toggle.setAttribute('aria-pressed', paused);
+    syncMontage(); syncLoop();
+  });
+
+  /* Film complet : lancé au clic, avec le son */
+  d.querySelector('[data-video-play]').addEventListener('click', e => {
+    filmStarted = true;
+    const v = d.createElement('video');
+    v.src = frame.dataset.src; v.controls = true; v.playsInline = true; v.preload = 'auto';
+    v.className = 'absolute inset-0 h-full w-full bg-black object-contain';
+    v.setAttribute('aria-label', 'Film récap des 10 km de Dakar');
+    frame.classList.remove('aspect-[16/10]', 'lg:aspect-[2/1]', 'lg:rounded-full');
+    frame.classList.add('aspect-video');
+    frame.replaceChildren(v);
+    d.querySelector('[data-video-play-wrap]').remove();
+    v.play().catch(() => {});
+    v.focus();
+  }, { once: true });
+
+  /* Compteurs */
+  if (!reduce) {
+    const co = io(entries => entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const el = en.target, end = +el.dataset.count, t0 = performance.now(), dur = 1400;
+      const step = t => { const p = Math.min((t - t0) / dur, 1); el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step); co.unobserve(el);
+    }), { threshold: .6 });
+    d.querySelectorAll('[data-count]').forEach(c => co.observe(c));
+  }
+
+  /* Liste des événements : la photo suit le curseur dans un cercle */
+  const list = d.querySelector('[data-peek-list]');
+  const peek = d.querySelector('[data-peek-follower]');
+  if (finePointer && !reduce) {
+    const img = new Image(440, 440);
+    img.alt = ''; img.className = 'size-full object-cover';
+    const url = id => `https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_440/sowdigital/${id}`;
+    let x = 0, y = 0, px = 0, py = 0, raf = 0, preloaded = false;
+    const loopPeek = () => {
+      px += (x - px) * .18; py += (y - py) * .18;
+      peek.style.transform = `translate3d(${px + 40}px, ${py - 112}px, 0)`;
+      raf = Math.abs(x - px) + Math.abs(y - py) > .5 ? requestAnimationFrame(loopPeek) : 0;
+    };
+    list.addEventListener('pointerenter', e => {
+      if (!preloaded) { preloaded = true; peek.append(img); list.querySelectorAll('[data-peek]').forEach(r => { new Image().src = url(r.dataset.peek); }); }
+      px = x = e.clientX; py = y = e.clientY; loopPeek();
+    });
+    list.addEventListener('pointermove', e => {
+      x = e.clientX; y = e.clientY;
+      const row = e.target.closest('[data-peek]');
+      if (row) { const u = url(row.dataset.peek); if (img.src !== u) img.src = u; peek.classList.add('is-on'); }
+      if (!raf) raf = requestAnimationFrame(loopPeek);
+    });
+    list.addEventListener('pointerleave', () => peek.classList.remove('is-on'));
+    addEventListener('scroll', () => peek.classList.remove('is-on'), { passive: true });
+  } else peek.remove();
+
+  /* Onglets des terrains */
+  const tabs = [...d.querySelectorAll('[role="tab"]')];
+  function selectTab(tab, focus) {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      d.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t));
+    t.addEventListener('keydown', e => {
+      const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      const target = step ? tabs[(i + step + tabs.length) % tabs.length] : e.key === 'Home' ? tabs[0] : e.key === 'End' ? tabs[tabs.length - 1] : null;
+      if (target) { e.preventDefault(); selectTab(target, true); }
+    });
+  });
+})();
+</script>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:2147483000;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;background:#0b0b0b;color:#fff;font:500 14px/1 system-ui,sans-serif;text-decoration:none;box-shadow:0 6px 24px rgba(0,0,0,.25)">&larr; Les 3 pistes</a>
+</body>
+</html>

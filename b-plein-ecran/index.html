@@ -1,0 +1,1542 @@
+<!doctype html>
+<!--
+  Concept : Plein cadre
+  Grande idée :
+    1. L'image prend tout l'écran, l'interface se met en retrait. Le cadre s'ouvre au chargement, la page finit sur un plan final plein écran.
+    2. La page se monte comme un film : ouverture, séquence complète, plans de terrain bord à bord, plan final, générique.
+    3. Le jaune SowDigital est le point du logo : il marque ce qui avance (montage, séquence, défilé des noms) et l'unique appel final.
+  Typographies : Inter Tight (titres très grands, approche serrée, et texte courant), Geist Mono (métadonnées : index, dates, lieux).
+  Palette : blanc #FFFFFF, brume #F4F4F2, filet #E6E6E3, gris #666666, encre #0B0B0B, jaune #FFB800 (fonds, points et lignes, jamais en texte sur blanc).
+-->
+<html lang="fr" class="no-js">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SowDigital · Photo, vidéo et communication digitale à Dakar</title>
+<meta name="description" content="Studio photo, vidéo et communication digitale à Dakar. Forums, sommets, cérémonies officielles, sport et culture, couverts de l’arrivée des officiels à la photo de famille.">
+<meta name="theme-color" content="#0B0B0B">
+<link rel="icon" href="../brand/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">
+<script>document.documentElement.className='js';</script>
+<link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.14"></script>
+<style type="text/tailwindcss">
+@theme {
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-ink: #0B0B0B;
+  --color-paper: #FFFFFF;
+  --color-mist: #F4F4F2;
+  --color-line: #E6E6E3;
+  --color-mute: #666666;
+  --color-signal: #FFB800;
+  --ease-film: cubic-bezier(.2,.7,.1,1);
+  --tracking-display: -0.05em;
+}
+</style>
+<style>
+@layer theme, base, components, utilities;
+@layer components {
+:root{
+  --ink:#0B0B0B;--paper:#FFFFFF;--mist:#F4F4F2;--line:#E6E6E3;--mute:#666666;--soft:#3D3D3D;--signal:#FFB800;
+  --gut:clamp(20px,4vw,56px);--hdr:72px;
+  --ease:cubic-bezier(.2,.7,.1,1);--ease-io:cubic-bezier(.65,0,.25,1);
+}
+html{scroll-behavior:smooth;overflow-x:clip;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Inter Tight",ui-sans-serif,system-ui,sans-serif;font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip;text-rendering:optimizeLegibility}
+img,video,picture{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;text-align:inherit}
+h1,h2,h3,p,ol,ul,figure,dl,dd{margin:0}
+ol,ul{list-style:none;padding:0}
+::selection{background:var(--signal);color:var(--ink)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:3px}
+.on-dark :focus-visible{outline-color:#fff}
+.hdr.is-solid :focus-visible{outline-color:var(--ink)}
+.sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.wrap{width:100%;max-width:1600px;margin-inline:auto;padding-inline:var(--gut);box-sizing:border-box}
+.grid12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(16px,2vw,28px)}
+.mono{font-family:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.5;letter-spacing:.01em;font-weight:400}
+.mute{color:var(--mute)}
+.label{display:flex;align-items:center;gap:10px;color:var(--mute)}
+.label b{font-weight:500;color:var(--ink)}
+.h-xl{font-size:clamp(2.6rem,7.2vw,7.75rem);line-height:.9;letter-spacing:-.048em;font-weight:500}
+.h-lg{font-size:clamp(2.1rem,4.6vw,4.75rem);line-height:.96;letter-spacing:-.04em;font-weight:500}
+.lead{font-size:clamp(17px,1.35vw,20px);line-height:1.45;color:var(--soft);max-width:44ch}
+
+/* Liens et boutons */
+.skip{position:fixed;left:16px;top:-80px;z-index:100;background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:500;transition:top .2s}
+.skip:focus{top:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:0 24px;border-radius:999px;font-size:16px;font-weight:500;letter-spacing:-.01em;white-space:nowrap;transition:background-color .35s,color .35s,transform .5s var(--ease)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-light{background:#fff;color:var(--ink)}
+.btn-light:hover{background:var(--mist)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:#262626}
+.btn .dot,.dot{width:8px;height:8px;border-radius:50%;background:var(--signal);flex:none}
+.ulink{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:44px;font-weight:500}
+.ulink::after{content:"";position:absolute;left:0;right:0;bottom:8px;height:1px;background:currentColor;transform-origin:left;transition:transform .6s var(--ease)}
+.ulink:hover::after{transform:scaleX(0);transform-origin:right}
+.ulink .arr{transition:transform .5s var(--ease)}
+.ulink:hover .arr{transform:translateX(4px)}
+.ulink.down:hover .arr{transform:translateY(3px)}
+.icon-btn{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:50%;border:1px solid currentColor;transition:background-color .3s,color .3s,opacity .3s,border-color .3s}
+.icon-btn svg{width:18px;height:18px}
+.icon-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.icon-btn[aria-disabled="true"]{opacity:.28;pointer-events:none}
+
+/* En-tête */
+.hdr{position:fixed;inset:0 0 auto 0;z-index:50;height:var(--hdr);color:#fff;border-bottom:1px solid transparent;transition:transform .55s var(--ease),color .35s,border-color .35s}
+.hdr::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.9);-webkit-backdrop-filter:saturate(1.6) blur(14px);backdrop-filter:saturate(1.6) blur(14px);opacity:0;transition:opacity .35s}
+.hdr.is-solid{color:var(--ink);border-bottom-color:var(--line)}
+.hdr.is-solid::before{opacity:1}
+.hdr.is-hidden{transform:translateY(-101%)}
+.hdr-in{position:relative;height:100%;display:flex;align-items:center;gap:24px}
+.brand{position:relative;display:block;flex:none;width:154px;height:22px}
+.brand::after{content:"";position:absolute;inset:-12px -8px}
+.brand img{position:absolute;inset:0;width:100%;height:100%;transition:opacity .35s}
+.brand .logo-d,.hdr.is-solid .brand .logo-l{opacity:0}
+.hdr.is-solid .brand .logo-d{opacity:1}
+.nav{margin-left:auto;display:flex;align-items:center}
+.nav a{position:relative;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px;font-size:15px;font-weight:500;letter-spacing:-.01em}
+.nav a::after{content:"";position:absolute;left:14px;right:14px;bottom:9px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.nav a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav a::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal);margin-left:-14px;transform:scale(0);transition:transform .4s var(--ease),margin .4s var(--ease)}
+.nav a[aria-current]::before{transform:scale(1);margin-left:0}
+.btn-wa{min-height:44px;padding:0 18px 0 15px;font-size:15px;gap:9px;background:#fff;color:var(--ink)}
+.btn-wa:hover{background:var(--mist)}
+.hdr.is-solid .btn-wa{background:var(--ink);color:#fff}
+.burger{display:none;position:relative;width:44px;height:44px;margin-right:-10px;flex:none}
+.burger i{position:absolute;left:11px;right:11px;height:1.5px;background:currentColor;border-radius:2px;transition:transform .5s var(--ease)}
+.burger i:nth-child(1){top:18px}
+.burger i:nth-child(2){top:25px}
+.menu-open .burger i:nth-child(1){transform:translateY(3.5px) rotate(45deg)}
+.menu-open .burger i:nth-child(2){transform:translateY(-3.5px) rotate(-45deg)}
+
+/* Menu mobile */
+.menu{position:fixed;inset:0;z-index:45;background:#fff;color:var(--ink);padding-top:var(--hdr);overflow-y:auto;visibility:hidden;opacity:0;transition:opacity .4s var(--ease),visibility 0s .4s}
+.menu-open .menu{visibility:visible;opacity:1;transition:opacity .4s var(--ease)}
+.menu-in{min-height:calc(100svh - var(--hdr));display:flex;flex-direction:column;justify-content:space-between;padding-top:24px;padding-bottom:28px;box-sizing:border-box}
+.menu-list li{border-bottom:1px solid var(--line);opacity:0;transform:translateY(18px);transition:opacity .5s var(--ease),transform .7s var(--ease)}
+.menu-open .menu-list li{opacity:1;transform:none;transition-delay:calc(80ms + var(--i) * 55ms)}
+.menu-list a{display:flex;align-items:baseline;gap:14px;padding:16px 0;font-size:clamp(2.5rem,12vw,4rem);font-weight:500;letter-spacing:-.045em;line-height:1}
+.menu-list .mono{color:var(--mute);width:22px}
+.menu-foot{display:grid;gap:18px;padding-top:32px}
+.menu-foot .btn{width:100%;min-height:56px}
+.menu-foot p{display:flex;flex-wrap:wrap;gap:4px 18px}
+.menu-foot p a{display:inline-flex;align-items:center;min-height:44px}
+
+/* Ouverture */
+.hero{position:relative;height:100vh;height:100svh;min-height:600px;background:#121212;color:#fff;overflow:hidden;isolation:isolate}
+.slides{position:absolute;inset:0}
+/* Montage : le nouveau plan entre en volet par la droite, l'ancien recule et s'assombrit. Le premier plan s'ouvre depuis le centre. */
+.slide{position:absolute;inset:0;visibility:hidden;overflow:hidden}
+.slide.is-active{visibility:visible;z-index:2;animation:wipe 1.15s var(--ease-io) both}
+.slide.is-first{animation:open 1.7s var(--ease-io) .05s both}
+.slide.is-prev{visibility:visible;z-index:1}
+.slide.is-prev::after{content:"";position:absolute;inset:0;background:#000;animation:dim 1.15s var(--ease-io) both}
+.slide picture,.slide img{width:100%;height:100%}
+.slide img{object-fit:cover;transform-origin:50% 45%}
+.slide.is-active img,.slide.is-prev img{animation:kb 8.5s cubic-bezier(.25,.6,.3,1) both}
+.hero:not(.is-running) .slide img,.hero:not(.is-running) .slide{animation-play-state:paused}
+.hero:not(.is-running) .slide.is-first{animation-play-state:running}
+@keyframes kb{from{transform:scale(1.14) translate3d(1.5%,0,0)}to{transform:scale(1.01) translate3d(0,0,0)}}
+@keyframes wipe{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0 0 0 0)}}
+@keyframes open{from{clip-path:inset(22% 26% 22% 26%)}to{clip-path:inset(0 0 0 0)}}
+@keyframes dim{from{opacity:0}to{opacity:.55}}
+.hero-shade{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.55) 0,rgba(0,0,0,.18) 14%,rgba(0,0,0,0) 26%),linear-gradient(0deg,rgba(0,0,0,.82) 0,rgba(0,0,0,.58) 30%,rgba(0,0,0,.2) 56%,rgba(0,0,0,0) 72%)}
+.hero-ui{position:relative;z-index:4;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:clamp(18px,2.6vw,36px)}
+.h-hero{font-size:clamp(3rem,min(13.6vw,26svh),14rem);font-weight:500;line-height:.84;letter-spacing:-.055em;margin-left:-.06em}
+.h-hero .ln{display:block;overflow:hidden;padding:.08em 0 .12em;margin:-.08em 0 -.12em}
+.h-hero .ln>span{display:block}
+.js .h-hero .ln>span{transform:translateY(112%);animation:rise 1.4s var(--ease) forwards;animation-delay:calc(.2s + var(--i) * .13s)}
+@keyframes rise{to{transform:none}}
+.hero-row{margin-top:clamp(22px,2.6vw,40px);align-items:end;row-gap:20px}
+.hero-lede{grid-column:1/span 4;font-size:clamp(16px,1.2vw,18px);line-height:1.45;color:rgba(255,255,255,.9);max-width:40ch}
+.hero-cta{grid-column:5/span 4;display:flex;flex-wrap:wrap;align-items:center;gap:8px 22px}
+.hero-cap{grid-column:9/span 4}
+.js .hero-fade{opacity:0;transform:translateY(14px);animation:fadeup 1.1s var(--ease) forwards;animation-delay:var(--d,.7s)}
+@keyframes fadeup{to{opacity:1;transform:none}}
+.cap-top{display:flex;align-items:center;gap:14px;color:rgba(255,255,255,.8)}
+.cap-top .of{color:rgba(255,255,255,.5)}
+.cap-top .idx{flex:none;min-width:58px}
+.hero .icon-btn{width:44px;height:44px;border-color:rgba(255,255,255,.45)}
+.hero .icon-btn:hover{background:#fff;color:var(--ink);border-color:#fff}
+.icon-play{display:none}
+.hero:not(.is-playing) .icon-play{display:block}
+.hero:not(.is-playing) .icon-pause{display:none}
+.segs{flex:1;display:flex;gap:6px}
+.seg{position:relative;flex:1;height:44px}
+.seg::before,.seg i{content:"";position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px}
+.seg::before{background:rgba(255,255,255,.28);transition:background-color .3s}
+.seg:hover::before{background:rgba(255,255,255,.6)}
+.seg i{background:var(--signal);transform:scaleX(0);transform-origin:left}
+.seg.is-done i{transform:scaleX(1);background:#fff}
+.seg.is-cur i{animation:fill var(--dur,6.5s) linear forwards;animation-play-state:paused}
+.hero.is-running .seg.is-cur i{animation-play-state:running}
+.hero.is-static .seg.is-cur i{animation:none;transform:none}
+@keyframes fill{to{transform:scaleX(1)}}
+.cap-txt{margin-top:10px;transition:opacity .35s var(--ease),transform .5s var(--ease)}
+.cap-txt.swap{opacity:0;transform:translateY(6px)}
+.cap-title{font-size:16px;font-weight:500;letter-spacing:-.01em;line-height:1.3}
+.cap-meta{color:rgba(255,255,255,.72);margin-top:2px}
+
+/* Preuve : les noms en continu */
+.proof{padding-top:clamp(28px,3vw,44px);border-bottom:1px solid var(--line);overflow:hidden}
+.proof-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.proof-head .label{gap:12px;color:var(--ink)}
+.mono-link{font-family:"Geist Mono",ui-monospace,monospace;font-size:12px;font-weight:400;color:var(--mute);gap:8px}
+.mono-link:hover{color:var(--ink)}
+.mono-link .arr{width:14px;height:14px}
+.mq{display:flex;width:max-content;padding-block:clamp(14px,1.8vw,26px) clamp(22px,2.6vw,38px)}
+.mq-track{display:flex;flex:none;animation:mq 70s linear infinite}
+.proof:hover .mq-track{animation-play-state:paused}
+.mq li{display:flex;align-items:center;gap:clamp(22px,2.6vw,44px);padding-right:clamp(22px,2.6vw,44px);font-size:clamp(30px,4.6vw,72px);font-weight:500;letter-spacing:-.045em;line-height:1.05;white-space:nowrap}
+.mq li::after{content:"";width:.2em;height:.2em;border-radius:50%;background:var(--signal);flex:none;transform:translateY(.06em)}
+@keyframes mq{to{transform:translateX(-100%)}}
+
+/* Révélations */
+.js [data-r]{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease),transform 1.3s var(--ease);transition-delay:var(--d,0ms)}
+.js [data-r].in{opacity:1;transform:none}
+.js [data-r="clip"]{opacity:1;transform:none;clip-path:inset(0 0 100% 0);transition:clip-path 1.4s var(--ease-io);transition-delay:var(--d,0ms)}
+.js [data-r="clip"] img{transform:scale(1.14);transition:transform 2s var(--ease);transition-delay:var(--d,0ms)}
+.js [data-r="clip"].in{clip-path:inset(0 0 0 0)}
+.js [data-r="clip"].in img{transform:none}
+
+/* Manifeste */
+.sec{padding-block:clamp(96px,12vw,184px)}
+.st-label{grid-column:1/span 3;padding-top:.9em;align-self:start}
+.st-text{grid-column:4/span 9;font-size:clamp(1.85rem,4.1vw,4.4rem);line-height:1.04;letter-spacing:-.038em;font-weight:500;text-wrap:pretty}
+.st-text .w{color:#C9C9C5;transition:color .4s}
+.st-text .w.on{color:var(--ink)}
+.facts{grid-column:4/span 9;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(16px,2vw,28px);margin-top:clamp(56px,7vw,104px)}
+.fact{border-top:1px solid var(--ink);padding-top:18px}
+.fact dt{font-size:clamp(3.2rem,6.4vw,6.5rem);font-weight:500;letter-spacing:-.06em;line-height:.9}
+.fact dd{margin-top:12px;color:var(--mute);max-width:26ch}
+.fact-link{display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.fact-link p{font-size:17px;line-height:1.4;color:var(--soft);max-width:26ch;padding-top:.4em}
+
+/* Travaux : bande horizontale */
+.work{padding-bottom:clamp(88px,10vw,150px)}
+.work-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:clamp(32px,4vw,56px)}
+.work-head .h-xl{margin-top:18px}
+.work-aside{display:flex;align-items:flex-end;gap:28px}
+.work-aside p{max-width:28ch;color:var(--mute);font-size:15px;line-height:1.45}
+.ctrls{display:flex;gap:8px}
+.strip{--pad:max(var(--gut),calc((100% - 1600px) / 2 + var(--gut)));position:relative;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:var(--pad);scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;outline-offset:-3px}
+.strip::-webkit-scrollbar{display:none}
+.strip.is-drag{scroll-snap-type:none;cursor:grabbing;user-select:none;-webkit-user-select:none}
+.strip-track{display:flex;align-items:flex-start;gap:clamp(12px,1.6vw,24px);padding-inline:var(--pad);width:max-content}
+.card{--h:clamp(300px,60vh,620px);flex:none;scroll-snap-align:start}
+.card-p{width:calc(var(--h) * .8)}
+.card-l{width:calc(var(--h) * 1.5)}
+.card-fig{position:relative;height:var(--h);overflow:hidden;background:var(--mist)}
+.card-fig picture,.card-fig img{width:100%;height:100%}
+.card-fig img{object-fit:cover;transition:transform 1.5s var(--ease);-webkit-user-drag:none}
+.card:hover .card-fig img{transform:scale(1.045)}
+.card-meta{display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:12px;row-gap:4px;padding-top:16px;padding-right:8px}
+.card-n{color:var(--mute);padding-top:.25em}
+.card-t{font-size:clamp(17px,1.35vw,21px);font-weight:500;letter-spacing:-.018em;line-height:1.22;text-wrap:balance}
+.card-m{grid-column:2;color:var(--mute)}
+.strip-foot{display:flex;align-items:center;gap:24px;margin-top:clamp(28px,3vw,44px)}
+.track{position:relative;flex:1;height:2px;background:var(--line);overflow:hidden}
+.track i{position:absolute;left:0;top:0;height:100%;width:20%;background:var(--signal);will-change:transform}
+.strip-foot .mono{color:var(--mute);min-width:56px;text-align:right}
+.fine .strip{cursor:none}
+.cursor{position:fixed;left:0;top:0;z-index:60;pointer-events:none}
+.cursor-in{display:flex;align-items:center;justify-content:center;gap:8px;width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;background:var(--ink);color:#fff;transform:scale(0);transition:transform .45s var(--ease)}
+.cursor.on .cursor-in{transform:scale(1)}
+.cursor.down .cursor-in{transform:scale(.82)}
+
+/* Index des événements */
+.ix-sec{padding-top:clamp(48px,6vw,96px);scroll-margin-top:24px}
+.ix-head{align-items:end;row-gap:20px}
+.ix-head .label{grid-column:1/span 12;margin-bottom:18px}
+.ix-head h2{grid-column:1/span 7}
+.ix-head .lead{grid-column:9/span 4}
+.ix-cols{display:grid;grid-template-columns:64px minmax(0,1fr) 240px 132px 116px;gap:20px;margin-top:clamp(48px,5vw,72px);padding-bottom:12px;color:var(--mute)}
+.ix-list{border-bottom:1px solid var(--line)}
+.ix-row{display:grid;grid-template-columns:64px minmax(0,1fr) 240px 132px 116px;gap:20px;align-items:baseline;padding:22px 0;border-top:1px solid var(--line);transition:opacity .45s var(--ease)}
+.ix-n{color:var(--mute)}
+.ix-t{position:relative;font-size:clamp(19px,1.85vw,29px);font-weight:500;letter-spacing:-.028em;line-height:1.12;transition:transform .6s var(--ease)}
+.ix-t::before{content:"";position:absolute;left:-18px;top:.42em;width:8px;height:8px;border-radius:50%;background:var(--signal);transform:scale(0);transition:transform .45s var(--ease)}
+.ix-place,.ix-cat,.ix-date{color:var(--mute)}
+.ix-thumb{display:none}
+.fine .ix-list:hover .ix-row{opacity:.3}
+.fine .ix-list .ix-row:hover{opacity:1}
+.fine .ix-row:hover .ix-t{transform:translateX(18px)}
+.fine .ix-row:hover .ix-t::before{transform:scale(1)}
+.ix-more{margin-top:28px}
+.ix-float{position:fixed;left:0;top:0;z-index:40;width:clamp(260px,22vw,340px);aspect-ratio:4/3;pointer-events:none;will-change:transform}
+.ix-float-in{position:absolute;inset:0;overflow:hidden;background:var(--mist);transform:scale(.6);opacity:0;transition:transform .5s var(--ease),opacity .3s}
+.ix-float.on.has .ix-float-in{transform:scale(1);opacity:1}
+.ix-float img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
+.ix-float img.on{opacity:1}
+
+/* Méthode : séquence collante */
+.seq{position:relative;height:calc(100svh + var(--n) * 70svh);background:#111;color:#fff}
+.seq-sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.seq-fig{position:absolute;inset:0;opacity:0;transition:opacity 1s var(--ease-io)}
+.seq-fig.is-active{opacity:1}
+.seq-fig picture,.seq-fig img{width:100%;height:100%}
+.seq-fig img{object-fit:cover;transform:scale(1.07);transition:transform 2.6s var(--ease)}
+.seq-fig.is-active img{transform:none}
+.seq-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.74) 0,rgba(0,0,0,.5) 30%,rgba(0,0,0,.12) 56%,rgba(0,0,0,0) 72%),linear-gradient(0deg,rgba(0,0,0,.8) 0,rgba(0,0,0,.42) 30%,rgba(0,0,0,0) 56%),linear-gradient(180deg,rgba(0,0,0,.45) 0,rgba(0,0,0,0) 30%)}
+.seq-ui{position:relative;z-index:2;height:100%;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto 1fr auto;column-gap:clamp(16px,2vw,28px);padding-top:calc(var(--hdr) + clamp(20px,3vw,48px));padding-bottom:clamp(28px,3.4vw,52px)}
+.seq-top{grid-column:1/span 6}
+.seq-top .label{color:rgba(255,255,255,.7)}
+.seq-top .label b{color:#fff}
+.seq-top .h-lg{margin-top:18px}
+.seq-top p{margin-top:18px;color:rgba(255,255,255,.82);max-width:40ch;font-size:clamp(16px,1.2vw,18px)}
+.seq-steps{grid-column:1/span 5;grid-row:3;align-self:end}
+.seq-step{display:flex;align-items:center;gap:14px;width:100%;min-height:48px;font-size:clamp(19px,1.9vw,30px);font-weight:500;letter-spacing:-.025em;line-height:1.1;color:rgba(255,255,255,.42);transition:color .45s var(--ease)}
+.seq-step:hover{color:rgba(255,255,255,.75)}
+.seq-step .mono{width:26px;flex:none}
+.seq-step .dot{transform:scale(0);transition:transform .45s var(--ease)}
+.seq-step.is-active{color:#fff}
+.seq-step.is-active .dot{transform:scale(1)}
+.seq-side{grid-column:8/span 5;grid-row:3;align-self:end;display:grid;gap:14px}
+.seq-now{display:none}
+.seq-desc{font-size:clamp(17px,1.4vw,21px);line-height:1.4;max-width:34ch}
+.seq-cap{color:rgba(255,255,255,.7)}
+.seq-prog{position:absolute;left:0;right:0;bottom:0;z-index:3;height:3px;background:rgba(255,255,255,.16)}
+.seq-prog i{display:block;height:100%;background:var(--signal);transform-origin:left;transform:scaleX(0)}
+
+/* Expertises */
+.exp-head{align-items:end;row-gap:20px}
+.exp-head .label{grid-column:1/span 12;margin-bottom:18px}
+.exp-head h2{grid-column:1/span 8}
+.exp-head .lead{grid-column:9/span 4}
+.disc{margin-top:clamp(48px,6vw,88px);border-top:1px solid var(--ink)}
+.disc li{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(16px,2vw,28px);row-gap:12px;align-items:baseline;padding:clamp(22px,2.4vw,34px) 0;border-bottom:1px solid var(--line)}
+.disc .mono{grid-column:1/span 1;color:var(--mute)}
+.disc h3{grid-column:2/span 6;font-size:clamp(2.1rem,4.4vw,4.6rem);font-weight:500;letter-spacing:-.045em;line-height:.95}
+.disc p{grid-column:8/span 5;color:var(--soft);max-width:46ch}
+#expertises{padding-bottom:0}
+.terr-label{margin-top:clamp(64px,7vw,112px);margin-bottom:18px;gap:14px}
+.terr-label .hint{color:var(--mute)}
+.terr{display:flex;gap:2px;height:clamp(520px,88svh,940px)}
+.terr-item{position:relative;flex:1 1 0;min-width:0;overflow:hidden;background:#151515;color:#fff;transition:flex-grow 1s var(--ease)}
+.terr-item.is-open{flex-grow:2.7}
+.terr-item picture,.terr-item img{position:absolute;inset:0;width:100%;height:100%}
+.terr-item img{object-fit:cover;transform:scale(1.06);transition:transform 1.6s var(--ease)}
+.terr-item.is-open img{transform:none}
+.terr-item::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.74) 0,rgba(0,0,0,.18) 48%,rgba(0,0,0,0) 70%);pointer-events:none}
+.terr-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:clamp(18px,1.8vw,28px);pointer-events:none}
+.terr-body .mono{color:rgba(255,255,255,.75)}
+.terr-body h3{margin-top:8px;font-size:clamp(20px,1.95vw,32px);font-weight:500;letter-spacing:-.03em;line-height:1.05}
+.terr-more{display:grid;gap:12px;margin-top:12px;width:min(36ch,calc(100vw * .3));opacity:0;transform:translateY(12px);transition:opacity .4s,transform .7s var(--ease)}
+.terr-item.is-open .terr-more{opacity:1;transform:none;transition-delay:.3s}
+.terr-more p{font-size:16px;line-height:1.4;color:rgba(255,255,255,.9)}
+.terr-btn{position:absolute;inset:0;z-index:3}
+.terr-btn:focus-visible{outline:2px solid #fff;outline-offset:-6px}
+
+/* Films */
+.film-head{align-items:end;row-gap:20px}
+.film-head .label{grid-column:1/span 12;margin-bottom:18px}
+.film-head h2{grid-column:1/span 7}
+.film-head .lead{grid-column:9/span 4}
+.player{position:relative;aspect-ratio:16/9;margin-top:clamp(40px,5vw,72px);background:#000;overflow:hidden;color:#fff}
+.player img{width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease),opacity .4s}
+.player:hover img{transform:scale(1.025)}
+.player::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.5),rgba(0,0,0,0) 40%);pointer-events:none}
+.play{position:absolute;inset:0;z-index:2;display:grid;place-items:center}
+.play-c{display:grid;place-items:center;width:clamp(76px,8.4vw,128px);aspect-ratio:1;border-radius:50%;background:#fff;color:var(--ink);transition:transform .7s var(--ease)}
+.play-c svg{width:28%;height:28%;margin-left:6%}
+.play:hover .play-c{transform:scale(1.08)}
+.play:focus-visible{outline-offset:-8px;outline-color:#fff}
+.player-meta{position:absolute;left:0;right:0;bottom:0;z-index:2;display:flex;justify-content:space-between;gap:16px;padding:clamp(16px,2vw,28px);pointer-events:none}
+.player video{position:absolute;inset:0;z-index:4;width:100%;height:100%;background:#000}
+.player.is-playing .play,.player.is-playing .player-meta{visibility:hidden}
+.films{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(16px,2vw,28px);margin-top:20px}
+.film-tab{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;min-height:64px;padding:12px 0;border-top:1px solid var(--line);transition:border-color .3s}
+.film-tab .dot{transform:scale(0);transition:transform .4s var(--ease)}
+.film-tab[aria-pressed="true"]{border-top-color:var(--ink)}
+.film-tab[aria-pressed="true"] .dot{transform:scale(1)}
+.film-tab b{font-weight:500;font-size:17px;letter-spacing:-.01em}
+.film-tab .mono{color:var(--mute)}
+
+.terr-item:first-child .terr-body{padding-left:var(--gut)}
+
+/* Contact : plan final */
+.fin{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;background:#111;color:#fff;overflow:hidden;isolation:isolate}
+.fin-bg{position:absolute;left:0;right:0;top:-7%;height:114%;z-index:-2}
+.fin-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;will-change:transform}
+.fin-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(0,0,0,.86) 0,rgba(0,0,0,.6) 38%,rgba(0,0,0,.22) 66%,rgba(0,0,0,.35) 100%)}
+.fin-ui{padding-top:calc(var(--hdr) + 56px);padding-bottom:clamp(24px,2.6vw,40px)}
+.fin .label{color:rgba(255,255,255,.7);margin-bottom:clamp(18px,2vw,28px)}
+.fin .label b{color:#fff}
+.cta-title{font-size:clamp(3rem,9.4vw,10.5rem);line-height:.86;letter-spacing:-.055em;font-weight:500;max-width:12.5ch;margin-left:-.05em}
+.fin-row{margin-top:clamp(32px,4vw,64px);align-items:end;row-gap:28px}
+.fin-lede{grid-column:1/span 5;font-size:clamp(17px,1.35vw,20px);line-height:1.45;color:rgba(255,255,255,.88);max-width:40ch}
+.fin-cta{grid-column:7/span 6;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:10px 28px}
+.btn-signal{background:var(--signal);color:var(--ink);min-height:68px;padding:0 30px 0 26px;font-size:clamp(17px,1.3vw,19px);gap:14px}
+.btn-signal:hover{background:#fff}
+.btn-signal .arr{transition:transform .5s var(--ease)}
+.btn-signal:hover .arr{transform:translateX(4px)}
+.fin-alt{display:flex;flex-direction:column}
+.fin-alt a{display:inline-flex;align-items:center;min-height:44px;font-size:16px;color:rgba(255,255,255,.9);background-image:linear-gradient(currentColor,currentColor);background-size:0 1px;background-repeat:no-repeat;background-position:0 80%;transition:background-size .5s var(--ease)}
+.fin-alt a:hover{background-size:100% 1px}
+.fin-cap{margin-top:clamp(36px,4vw,64px);padding-top:16px;border-top:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.62)}
+
+/* Studio */
+.studio{align-items:start;row-gap:40px}
+.studio-fig{grid-column:1/span 5;position:relative;aspect-ratio:1353/1895;overflow:hidden;background:var(--mist)}
+.studio-fig img{width:100%;height:100%;object-fit:cover}
+.studio-txt{grid-column:7/span 6;padding-top:clamp(0px,2vw,24px)}
+.studio-txt .h-lg{margin-top:18px}
+.studio-txt .lead{margin-top:28px}
+.studio-list{margin-top:clamp(36px,4vw,56px);border-top:1px solid var(--ink)}
+.studio-list li{display:grid;grid-template-columns:120px minmax(0,1fr);gap:20px;padding:16px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.studio-list .mono{color:var(--mute)}
+.studio-txt .ulink{margin-top:24px}
+
+/* Pied de page : le générique */
+.ftr{background:var(--ink);color:#fff;padding-top:clamp(72px,8vw,128px);padding-bottom:24px}
+.ftr-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:clamp(36px,4vw,56px);border-bottom:1px solid rgba(255,255,255,.16)}
+.ftr-logo{width:clamp(200px,22vw,320px);height:auto}
+.ftr-kicker{color:rgba(255,255,255,.55);letter-spacing:.08em;text-transform:uppercase}
+.credits{display:grid;gap:0;margin-top:clamp(36px,4vw,64px)}
+.credits>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(20px,3vw,48px);align-items:baseline;padding:12px 0}
+.credits dt{text-align:right;color:rgba(255,255,255,.55)}
+.credits dd{margin:0;font-size:clamp(17px,1.5vw,22px);font-weight:500;letter-spacing:-.015em;line-height:1.35;max-width:34ch}
+.credits .links{display:flex;flex-wrap:wrap;gap:0 22px}
+.credits a{display:inline-flex;align-items:center;min-height:44px;margin-block:-8px;transition:color .3s}
+.credits a:hover{color:var(--signal)}
+.ftr-bot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;margin-top:clamp(56px,6vw,96px);padding-top:16px;border-top:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.6)}
+.ftr-nav{display:flex;flex-wrap:wrap;gap:0 20px}
+.ftr-bot a{display:inline-flex;align-items:center;min-height:44px;transition:color .3s}
+.ftr-bot a:hover{color:#fff}
+
+/* Tablette */
+@media (max-width:1100px){
+  .terr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));height:auto;gap:2px}
+  .terr-item:nth-child(odd) .terr-body{padding-left:var(--gut)}
+  .terr-label .hint{display:none}
+  .terr-item{aspect-ratio:4/5}
+  .terr-more{opacity:1;transform:none;width:auto}
+  .terr-btn{display:none}
+  .terr-item img{transform:none}
+  .terr-item::after{background:linear-gradient(0deg,rgba(0,0,0,.84) 0,rgba(0,0,0,.45) 42%,rgba(0,0,0,0) 66%)}
+}
+@media (max-width:1023px){
+  .hero-lede{grid-column:1/span 6}
+  .hero-cta{grid-column:7/span 6}
+  .hero-cap{grid-column:1/span 12;max-width:520px}
+  .ix-cols,.ix-row{grid-template-columns:48px minmax(0,1fr) 120px 110px}
+  .ix-cols .c-place,.ix-place{display:none}
+}
+/* Mobile */
+@media (max-width:899px){
+  :root{--hdr:64px}
+  .nav{display:none}
+  .burger{display:block}
+  .btn-wa{margin-left:auto;width:44px;padding:0}
+  .btn-wa .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .brand{width:140px;height:20px}
+  .st-label,.st-text,.facts{grid-column:1/-1}
+  .st-label{margin-bottom:24px;padding-top:0}
+  .facts{grid-template-columns:1fr 1fr;row-gap:36px}
+  .fact-link{grid-column:1/-1}
+  .work-head{align-items:flex-end}
+  .work-aside{flex:none}
+  .ix-head h2,.ix-head .lead,.exp-head h2,.exp-head .lead,.film-head h2,.film-head .lead{grid-column:1/-1}
+  .disc h3{grid-column:2/span 11}
+  .disc p{grid-column:2/span 11}
+  .studio-fig{grid-column:1/-1;max-width:520px}
+  .studio-txt{grid-column:1/-1}
+  .fin-lede,.fin-cta{grid-column:1/-1}
+  .fin-cta{justify-content:flex-start}
+  .credits>div{grid-template-columns:1fr;row-gap:2px;padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}
+  .credits dt{text-align:left}
+  .seq-top{grid-column:1/-1}
+  .seq-steps{grid-column:1/-1;grid-row:auto;display:flex;gap:6px;margin-top:20px}
+  .seq-steps li{flex:1}
+  .seq-step{position:relative;justify-content:center;min-height:44px;font-size:0;gap:0}
+  .seq-step::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:2px;background:rgba(255,255,255,.3)}
+  .seq-step.is-active::after{background:var(--signal)}
+  .seq-step .mono{font-size:12px;width:auto}
+  .seq-step .dot,.seq-step .lbl{display:none}
+  .seq-side{grid-column:1/-1;grid-row:3;gap:10px}
+  .seq-ui{grid-template-rows:auto 1fr auto auto}
+  .seq-now{display:block;font-size:clamp(2rem,9vw,2.6rem);font-weight:500;letter-spacing:-.035em;line-height:1}
+  .seq-steps{grid-row:4}
+  .seq-shade{background:linear-gradient(0deg,rgba(0,0,0,.88) 0,rgba(0,0,0,.62) 44%,rgba(0,0,0,.15) 64%,rgba(0,0,0,0) 74%),linear-gradient(180deg,rgba(0,0,0,.62) 0,rgba(0,0,0,.3) 26%,rgba(0,0,0,0) 40%)}
+}
+@media (max-width:767px){
+  .hero-lede,.hero-cta,.hero-cap{grid-column:1/-1}
+  .hero-cta{gap:4px 20px}
+  .hero-cap{max-width:none}
+  .cap-top{flex-wrap:wrap;row-gap:0}
+  .cap-top .idx{margin-right:auto}
+  .segs{order:3;flex:1 1 100%}
+  .hero-shade{background:linear-gradient(180deg,rgba(0,0,0,.5) 0,rgba(0,0,0,0) 18%),linear-gradient(0deg,rgba(0,0,0,.86) 0,rgba(0,0,0,.62) 42%,rgba(0,0,0,.18) 64%,rgba(0,0,0,0) 76%)}
+  .film-tab{grid-template-columns:14px minmax(0,1fr);grid-template-areas:"d t" "d m";row-gap:2px}
+  .film-tab .dot{grid-area:d}
+  .film-tab b{grid-area:t}
+  .film-tab .mono{grid-area:m}
+  .h-hero{font-size:clamp(3rem,16vw,5rem);letter-spacing:-.05em}
+  .hero-row{margin-top:18px;row-gap:18px}
+  .hide-sm{display:none}
+  .hero-lede{font-size:16px}
+  .hero-cta .btn{min-height:50px}
+  .card,.card-p,.card-l{width:78vw}
+  .card-fig{height:auto;aspect-ratio:4/5}
+  .work-aside p{display:none}
+  .ix-cols{display:none}
+  .ix-list{margin-top:36px}
+  .ix-row{grid-template-columns:56px auto minmax(0,1fr);grid-template-areas:"th t t" "th cat date";gap:4px 14px;align-items:center;padding:14px 0}
+  .ix-n,.ix-place{display:none}
+  .ix-thumb{display:block;grid-area:th;width:56px;height:56px;overflow:hidden;background:var(--mist)}
+  .ix-thumb img{width:100%;height:100%;object-fit:cover}
+  .ix-t{grid-area:t;font-size:17px;letter-spacing:-.015em}
+  .ix-cat{grid-area:cat}
+  .ix-date{grid-area:date;text-align:right}
+  .films{grid-template-columns:1fr}
+  .player{aspect-ratio:4/5;margin-inline:calc(var(--gut) * -1)}
+  .pm-note{display:none}
+  .terr{gap:2px}
+  .terr-item{aspect-ratio:3/4}
+  .terr-body{padding:14px}
+  .terr-body h3{font-size:19px}
+  .terr-more p{display:none}
+  .terr-more{margin-top:6px}
+  .fin-cta .btn{width:100%}
+  .fin-alt{flex-direction:row;flex-wrap:wrap;gap:0 20px}
+  .fin-alt a{font-size:15px}
+  .ftr-logo{width:200px}
+  .proof-head .mono-link{display:none}
+  .studio-list li{grid-template-columns:92px minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0ms!important}
+  .slide img,.seq-fig img,.terr-item img{animation:none!important;transform:none!important}
+  .js [data-r],.js [data-r="clip"]{opacity:1;transform:none;clip-path:none}
+  .js [data-r="clip"] img{transform:none}
+  .js .h-hero .ln>span,.js .hero-fade{transform:none;opacity:1;animation:none}
+  .st-text .w{color:var(--ink)}
+  .slide.is-active,.slide.is-first{animation:none!important;clip-path:none}
+  .slide.is-prev::after{display:none}
+  .mq{width:auto;overflow-x:auto;scrollbar-width:none}
+  .mq-track{animation:none!important}
+  .mq-track[aria-hidden]{display:none}
+  .fin-bg img{transform:none!important}
+  .seg.is-cur i{animation-duration:var(--dur,6.5s)!important}
+}
+}
+
+</style>
+</head>
+<body class="bg-paper text-ink font-sans">
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header id="hdr" class="hdr on-dark">
+  <div class="wrap hdr-in">
+    <a href="#top" class="brand" aria-label="SowDigital, retour à l’ouverture">
+      <img class="logo-l" src="../brand/logo-light.png" width="720" height="103" alt="">
+      <img class="logo-d" src="../brand/logo-dark.png" width="720" height="103" alt="">
+    </a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="#travaux">Travaux</a>
+      <a href="#expertises">Expertises</a>
+      <a href="#studio">Studio</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn btn-wa" href="https://wa.me/221773718484?text=Bonjour%20SowDigital%2C%20je%20vous%20%C3%A9cris%20au%20sujet%20d%E2%80%99un%20%C3%A9v%C3%A9nement." target="_blank" rel="noopener" aria-label="Écrire à SowDigital sur WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0 0 12.04 2Zm0 18.15h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.29Z"/></svg><span class="lbl">WhatsApp</span></a>
+    <button id="burger" class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu"><i></i><i></i></button>
+  </div>
+</header>
+
+<div id="menu" class="menu" inert>
+  <div class="wrap menu-in">
+    <nav aria-label="Menu mobile">
+      <ol class="menu-list">
+        <li style="--i:0"><a href="#travaux"><span class="mono">01</span>Travaux</a></li>
+        <li style="--i:1"><a href="#expertises"><span class="mono">02</span>Expertises</a></li>
+        <li style="--i:2"><a href="#studio"><span class="mono">03</span>Studio</a></li>
+        <li style="--i:3"><a href="#contact"><span class="mono">04</span>Contact</a></li>
+      </ol>
+    </nav>
+    <div class="menu-foot">
+      <a class="btn btn-ink" href="https://wa.me/221773718484?text=Bonjour%20SowDigital%2C%20je%20vous%20%C3%A9cris%20au%20sujet%20d%E2%80%99un%20%C3%A9v%C3%A9nement." target="_blank" rel="noopener"><span class="dot" aria-hidden="true"></span>Écrire sur WhatsApp</a>
+      <p class="mono"><a href="tel:+221773718484">+221 77 371 84 84</a><a href="mailto:fallou@groupe-sowdigital.com">fallou@groupe-sowdigital.com</a></p>
+      <p class="mono"><a href="https://www.instagram.com/sowdigital221" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/sowdigitalsenegal" target="_blank" rel="noopener">Facebook</a></p>
+    </div>
+  </div>
+</div>
+
+<main id="contenu">
+
+  <!-- 01 Ouverture : montage plein écran -->
+  <section id="top" class="hero on-dark is-playing" aria-label="Ouverture, diaporama de reportages" aria-roledescription="carrousel" style="--dur:5.6s">
+    <div class="slides">
+      <figure class="slide is-active is-first" role="group" aria-roledescription="diapositive" aria-label="1 sur 6" data-t="NP Show Culture, 1ère édition" data-m="Culture · Chant et calebasses sur scène · Janvier 2026">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c2-271 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c2-271 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c2-271 1280w" sizes="100vw">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_limit,w_1920/sowdigital/c2-271" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_limit,w_1280/sowdigital/c2-271 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_limit,w_1920/sowdigital/c2-271 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_limit,w_2560/sowdigital/c2-271 2560w" sizes="100vw" width="4000" height="2667" alt="Une chanteuse en boubou jaune chante au micro près de femmes jouant des calebasses sur l'eau, sur la scène du NP Show Culture." style="object-position:50% 30%" decoding="async" loading="eager" fetchpriority="high">
+        </picture>
+      </figure>
+      <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="2 sur 6" aria-hidden="true" data-t="10 km de Dakar, La Foulée de la Teranga" data-m="Sport · Corniche, Dakar · Mai 2025">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-641 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-641 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c1-641 1280w" sizes="100vw">
+          <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-641" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-641 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-641 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-641 2560w" sizes="100vw" width="4000" height="2649" alt="Un peloton de coureurs en débardeur et t-shirt avance sur la corniche de Dakar, palmiers et lampadaires en arrière-plan." style="object-position:50% 42%" decoding="async" loading="lazy">
+        </picture>
+      </figure>
+      <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="3 sur 6" aria-hidden="true" data-t="Rencontre du SPEBTPS" data-m="Forum · Allocution · Avril 2025">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-346 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-346 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c1-346 1280w" sizes="100vw">
+          <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-346" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-346 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-346 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-346 2560w" sizes="100vw" width="4000" height="2930" alt="Une intervenante souriante à lunettes et robe noire s'exprime devant un micro de presse APS près d'une baie vitrée." style="object-position:62% 30%" decoding="async" loading="lazy">
+        </picture>
+      </figure>
+      <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="4 sur 6" aria-hidden="true" data-t="Celebrity Game BAL, fan zone" data-m="Sport · Dakar · Août 2026">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1343 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1343 960w" sizes="100vw">
+          <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1343" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1343 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1343 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1343 2560w" sizes="100vw" width="2560" height="1920" alt="Une foule de jeunes spectateurs rassemblés devant une grande scène aux couleurs vert, jaune et rouge en plein air." style="object-position:50% 45%" decoding="async" loading="lazy">
+        </picture>
+      </figure>
+      <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="5 sur 6" aria-hidden="true" data-t="Cérémonie, salon d’honneur blanc et or" data-m="Cérémonie · Août 2026">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1301 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1301 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1138/sowdigital/c1-1301 1138w" sizes="100vw">
+          <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1301" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1301 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1301 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1301 2560w" sizes="100vw" width="2560" height="2277" alt="Une femme au foulard blanc et parure dorée sourit pendant une étreinte avec une autre femme vêtue de blanc brodé." style="object-position:50% 24%" decoding="async" loading="lazy">
+        </picture>
+      </figure>
+      <figure class="slide" role="group" aria-roledescription="diapositive" aria-label="6 sur 6" aria-hidden="true" data-t="Les Mardis du BTP, point presse" data-m="Institutionnel · Hôtel NOOM, Dakar · Avril 2026">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1254 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1254 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1248/sowdigital/c1-1254 1248w" sizes="100vw">
+          <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1254" data-srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1254 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1254 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1254 2560w" sizes="100vw" width="4000" height="2497" alt="Des journalistes et caméramans entourent des personnalités en costume devant le panneau Table ronde des Mardis du BTP." style="object-position:50% 35%" decoding="async" loading="lazy">
+        </picture>
+      </figure>
+    </div>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="wrap hero-ui">
+      <h1 class="h-hero"><span class="ln"><span style="--i:0">L’événement,</span></span><span class="ln"><span style="--i:1">en entier.</span></span></h1>
+      <div class="grid12 hero-row">
+        <p class="hero-lede hero-fade" style="--d:.9s">Photo, vidéo et communication digitale à Dakar. Nous couvrons chaque séquence, de l’arrivée des officiels à la photo de famille.</p>
+        <div class="hero-cta hero-fade" style="--d:1s">
+          <a class="btn btn-light" href="https://wa.me/221773718484?text=Bonjour%20SowDigital%2C%20je%20vous%20%C3%A9cris%20au%20sujet%20d%E2%80%99un%20%C3%A9v%C3%A9nement." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0 0 12.04 2Zm0 18.15h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>Écrire sur WhatsApp</a>
+          <a class="ulink down hide-sm" href="#travaux">Voir les travaux <svg class="arr" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3v13M5 11l5 5 5-5"/></svg></a>
+        </div>
+        <div class="hero-cap hero-fade" style="--d:1.1s">
+          <div class="cap-top mono">
+            <span class="idx" aria-hidden="true"><span id="capIdx">01</span><span class="of"> / 06</span></span>
+            <div class="segs" role="group" aria-label="Choisir une image"><button type="button" class="seg is-cur" aria-current="true" aria-label="Image 1 sur 6 : NP Show Culture, 1ère édition"><i></i></button><button type="button" class="seg" aria-label="Image 2 sur 6 : 10 km de Dakar, La Foulée de la Teranga"><i></i></button><button type="button" class="seg" aria-label="Image 3 sur 6 : Rencontre du SPEBTPS"><i></i></button><button type="button" class="seg" aria-label="Image 4 sur 6 : Celebrity Game BAL, fan zone"><i></i></button><button type="button" class="seg" aria-label="Image 5 sur 6 : Cérémonie, salon d’honneur blanc et or"><i></i></button><button type="button" class="seg" aria-label="Image 6 sur 6 : Les Mardis du BTP, point presse"><i></i></button></div>
+            <button id="heroPlay" class="icon-btn" type="button" aria-label="Mettre le diaporama en pause">
+              <svg class="icon-pause" viewBox="0 0 20 20" aria-hidden="true" fill="currentColor"><rect x="5" y="4" width="3" height="12" rx="1"/><rect x="12" y="4" width="3" height="12" rx="1"/></svg>
+              <svg class="icon-play" viewBox="0 0 20 20" aria-hidden="true" fill="currentColor"><path d="M6 4.5v11l9-5.5z"/></svg>
+            </button>
+          </div>
+          <div id="capTxt" class="cap-txt">
+            <p id="capTitle" class="cap-title">NP Show Culture, 1ère édition</p>
+            <p id="capMeta" class="cap-meta mono">Culture · Chant et calebasses sur scène · Janvier 2026</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Preuve : les noms, en continu -->
+  <section class="proof" aria-labelledby="pr-t">
+    <div class="wrap proof-head">
+      <h2 id="pr-t" class="mono label"><span class="dot" aria-hidden="true"></span><b>Déjà couverts</b></h2>
+      <a class="ulink mono-link" href="#index">L’index complet <svg class="arr" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3v13M5 11l5 5 5-5"/></svg></a>
+    </div>
+    <div class="mq">
+      <ul class="mq-track"><li>Les Mardis du BTP</li><li>G20 Conference in West Africa</li><li>FII Sénégal 2025</li><li>65 ans de l’Indépendance du Sénégal</li><li>BAL 2025</li><li>Tiken Jah Facoly au CICES</li><li>Senegal Expo Osaka 2025</li><li>SPACEBUS’2025</li><li>10 km de Dakar</li><li>NP Show Culture</li><li>Salon international de l’habitat</li><li>Opération 1.000.000 arbres</li></ul>
+      <ul class="mq-track" aria-hidden="true"><li>Les Mardis du BTP</li><li>G20 Conference in West Africa</li><li>FII Sénégal 2025</li><li>65 ans de l’Indépendance du Sénégal</li><li>BAL 2025</li><li>Tiken Jah Facoly au CICES</li><li>Senegal Expo Osaka 2025</li><li>SPACEBUS’2025</li><li>10 km de Dakar</li><li>NP Show Culture</li><li>Salon international de l’habitat</li><li>Opération 1.000.000 arbres</li></ul>
+    </div>
+  </section>
+
+  <!-- 02 Manifeste -->
+  <section class="sec" aria-labelledby="st-t">
+    <div class="wrap grid12">
+      <p class="mono label st-label"><b>01</b> En bref</p>
+      <h2 id="st-t" class="st-text" data-words>Ministères, Présidence de la République, ONG, entreprises. Ils nous confient leurs grands rendez-vous. Nous les racontons en images, sans rien laisser hors champ.</h2>
+      <dl class="facts">
+        <div class="fact" data-r><dt>37</dt><dd class="mono">reportages publiés sur le site, de novembre 2024 à août 2026</dd></div>
+        <div class="fact" data-r style="--d:90ms"><dt>696</dt><dd class="mono">photos publiées</dd></div>
+        <div class="fact fact-link" data-r style="--d:180ms"><p>Une seule équipe pour la photo, la vidéo et vos réseaux.</p><a class="ulink" href="#travaux">Voir les 37 reportages <svg class="arr" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 03 Travaux à la une : bande horizontale -->
+  <section id="travaux" class="work" aria-labelledby="w-t" data-nav="travaux">
+    <div class="wrap work-head">
+      <div>
+        <p class="mono label"><b>02</b> Travaux</p>
+        <h2 id="w-t" class="h-xl">Sur le terrain.</h2>
+      </div>
+      <div class="work-aside">
+        <p>Reportages récents, du protocole à la scène. Glissez ou utilisez les flèches.</p>
+        <div class="ctrls">
+          <button id="wPrev" class="icon-btn" type="button" aria-controls="strip" aria-label="Reportage précédent" aria-disabled="true"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 10H4M9 5l-5 5 5 5"/></svg></button>
+          <button id="wNext" class="icon-btn" type="button" aria-controls="strip" aria-label="Reportage suivant"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h13M11 5l5 5-5 5"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div id="strip" class="strip" tabindex="0" role="region" aria-label="Reportages récents, défilement horizontal">
+      <ol class="strip-track">
+        <li class="card card-p" data-r style="--d:0ms">
+          <figure class="card-fig">
+            <picture>
+              <source media="(max-width: 767px)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1269 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_720/sowdigital/c1-1269 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_960/sowdigital/c1-1269 960w" sizes="78vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_1000/sowdigital/c1-1269" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1269 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_720/sowdigital/c1-1269 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_1000/sowdigital/c1-1269 1000w" sizes="480px" width="1000" height="1250" alt="Une femme en turban violet, lunettes et boubou assorti éclate de rire, cadrée en gros plan vertical sur un fond clair." loading="lazy" decoding="async" draggable="false">
+            </picture>
+          </figure>
+          <div class="card-meta">
+            <span class="card-n mono">01</span>
+            <h3 class="card-t">Les Mardis du BTP : table ronde de haut niveau</h3>
+            <p class="card-m mono">Forum et conférence · Hôtel NOOM, Dakar · Avril 2026</p>
+          </div>
+        </li>
+        <li class="card card-l" data-r style="--d:90ms">
+          <figure class="card-fig">
+            <picture>
+              <source media="(max-width: 767px)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1195 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_682/sowdigital/c1-1195 682w" sizes="78vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1000/sowdigital/c1-1195" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_800/sowdigital/c1-1195 800w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1200/sowdigital/c1-1195 1200w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1279/sowdigital/c1-1195 1279w" sizes="880px" width="1000" height="667" alt="Vue large du panel sur scène, un intervenant projeté sur l'écran géant, et le public attablé au premier plan." loading="lazy" decoding="async" draggable="false">
+            </picture>
+          </figure>
+          <div class="card-meta">
+            <span class="card-n mono">02</span>
+            <h3 class="card-t">G20 Conference in West Africa</h3>
+            <p class="card-m mono">Forum et conférence · Noom Hotel Dakar Sea Plaza · Octobre 2025</p>
+          </div>
+        </li>
+        <li class="card card-p" data-r style="--d:180ms">
+          <figure class="card-fig">
+            <picture>
+              <source media="(max-width: 767px)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-258 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_720/sowdigital/c1-258 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_853/sowdigital/c1-258 853w" sizes="78vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_853/sowdigital/c1-258" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-258 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_720/sowdigital/c1-258 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_853/sowdigital/c1-258 853w" sizes="480px" width="853" height="1066" alt="Un garde d'honneur en tunique rouge et chéchia tient un fusil à baïonnette lors d'un défilé officiel." loading="lazy" decoding="async" draggable="false">
+            </picture>
+          </figure>
+          <div class="card-meta">
+            <span class="card-n mono">03</span>
+            <h3 class="card-t">65 ans de l’Indépendance du Sénégal, défilé du 4 avril</h3>
+            <p class="card-m mono">Institutionnel · Dakar · Avril 2025</p>
+          </div>
+        </li>
+        <li class="card card-l" data-r style="--d:0ms">
+          <figure class="card-fig">
+            <picture>
+              <source media="(max-width: 767px)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c2-289 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_720/sowdigital/c2-289 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_960/sowdigital/c2-289 960w" sizes="78vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1000/sowdigital/c2-289" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_800/sowdigital/c2-289 800w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1200/sowdigital/c2-289 1200w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1600/sowdigital/c2-289 1600w" sizes="880px" width="1000" height="667" alt="Un présentateur au micro se tient à côté d'un couple de mannequins en tenues wax, sur la scène illuminée de projecteurs." loading="lazy" decoding="async" draggable="false">
+            </picture>
+          </figure>
+          <div class="card-meta">
+            <span class="card-n mono">04</span>
+            <h3 class="card-t">NP Show Culture, 1ère édition</h3>
+            <p class="card-m mono">Culture et spectacle · Janvier 2026</p>
+          </div>
+        </li>
+        <li class="card card-p" data-r style="--d:90ms">
+          <figure class="card-fig">
+            <picture>
+              <source media="(max-width: 767px)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-675 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_720/sowdigital/c1-675 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_853/sowdigital/c1-675 853w" sizes="78vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_853/sowdigital/c1-675" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-675 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_720/sowdigital/c1-675 720w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_853/sowdigital/c1-675 853w" sizes="480px" width="853" height="1066" alt="Deux enfants en t-shirt jaune courent en riant sur la route, suivis d'autres coureurs, lors de la course de Dakar." loading="lazy" decoding="async" draggable="false">
+            </picture>
+          </figure>
+          <div class="card-meta">
+            <span class="card-n mono">05</span>
+            <h3 class="card-t">10 km de Dakar, La Foulée de la Teranga</h3>
+            <p class="card-m mono">Sport · Corniche, Dakar · Mai 2025</p>
+          </div>
+        </li>
+        <li class="card card-l" data-r style="--d:180ms">
+          <figure class="card-fig">
+            <picture>
+              <source media="(max-width: 767px)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-594 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_623/sowdigital/c1-594 623w" sizes="78vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1000/sowdigital/c1-594" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_800/sowdigital/c1-594 800w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1168/sowdigital/c1-594 1168w" sizes="880px" width="1000" height="667" alt="Le grand auditorium du CICAD rempli de participants, avec son mur facetté illuminé de rouge et un écran géant au fond." loading="lazy" decoding="async" draggable="false">
+            </picture>
+          </figure>
+          <div class="card-meta">
+            <span class="card-n mono">06</span>
+            <h3 class="card-t">5e Salon international de l’habitat et 1er Symposium des architectes africains</h3>
+            <p class="card-m mono">Forum et conférence · CICAD, Dakar · Mai 2025</p>
+          </div>
+        </li>
+        <li class="card card-l" data-r style="--d:0ms">
+          <figure class="card-fig">
+            <picture>
+              <source media="(max-width: 767px)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-243 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_682/sowdigital/c1-243 682w" sizes="78vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1000/sowdigital/c1-243" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_800/sowdigital/c1-243 800w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1200/sowdigital/c1-243 1200w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1279/sowdigital/c1-243 1279w" sizes="880px" width="1000" height="667" alt="Une personnalité officielle pensive, main au menton, assise devant le drapeau du Sénégal sur scène." loading="lazy" decoding="async" draggable="false">
+            </picture>
+          </figure>
+          <div class="card-meta">
+            <span class="card-n mono">07</span>
+            <h3 class="card-t">Senegal Expo Osaka 2025, rencontre officielle MINCOM et ASEPEX</h3>
+            <p class="card-m mono">Institutionnel · Dakar · Mars 2025</p>
+          </div>
+        </li>
+        <li class="card card-l" data-r style="--d:90ms">
+          <figure class="card-fig">
+            <picture>
+              <source media="(max-width: 767px)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-983 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_677/sowdigital/c1-983 677w" sizes="78vw">
+              <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1000/sowdigital/c1-983" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_800/sowdigital/c1-983 800w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1200/sowdigital/c1-983 1200w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.5,w_1270/sowdigital/c1-983 1270w" sizes="880px" width="1000" height="667" alt="Un groupe de volontaires accroupis dans la vase pose joyeusement devant la mangrove sous un ciel bleu, bras levés." loading="lazy" decoding="async" draggable="false">
+            </picture>
+          </figure>
+          <div class="card-meta">
+            <span class="card-n mono">08</span>
+            <h3 class="card-t">Opération 1.000.000 arbres, reboisement de la mangrove</h3>
+            <p class="card-m mono">Institutionnel · Sénégal · Novembre 2024</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <div class="wrap strip-foot">
+      <div id="wTrack" class="track" aria-hidden="true"><i id="wThumb"></i></div>
+      <span class="mono" aria-hidden="true"><span id="wCount">01</span> / 08</span>
+      <a class="ulink" href="#travaux">Tous les reportages <svg class="arr" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a>
+    </div>
+  </section>
+
+  <!-- 04 Index des événements -->
+  <section id="index" class="sec ix-sec" aria-labelledby="ix-t" data-nav="travaux">
+    <div class="wrap">
+      <div class="grid12 ix-head">
+        <p class="mono label"><b>03</b> Index</p>
+        <h2 id="ix-t" class="h-xl">Déjà dans la salle.</h2>
+        <p class="lead">Les événements couverts, du plus récent au plus ancien. Sur ordinateur, survolez une ligne pour voir l’image.</p>
+      </div>
+      <div class="ix-cols mono" aria-hidden="true"><span>N°</span><span>Événement</span><span class="c-place">Lieu</span><span>Rubrique</span><span>Date</span></div>
+      <ol id="ixList" class="ix-list">
+        <li class="ix-row" data-k="0">
+          <span class="ix-n mono">01</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-1254" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-1254 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-1254 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">Les Mardis du BTP, table ronde de haut niveau</span>
+          <span class="ix-place mono">Hôtel NOOM, Dakar</span>
+          <span class="ix-cat mono">Forum</span>
+          <span class="ix-date mono">Avril 2026</span>
+        </li>
+        <li class="ix-row" data-k="1">
+          <span class="ix-n mono">02</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c2-271" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c2-271 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c2-271 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">NP Show Culture, 1ère édition</span>
+          <span class="ix-place mono">·</span>
+          <span class="ix-cat mono">Culture</span>
+          <span class="ix-date mono">Janvier 2026</span>
+        </li>
+        <li class="ix-row" data-k="2">
+          <span class="ix-n mono">03</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-1136" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-1136 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-1136 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">FII Sénégal 2025, forum d’investissement</span>
+          <span class="ix-place mono">CICAD, Diamniadio</span>
+          <span class="ix-cat mono">Forum</span>
+          <span class="ix-date mono">Octobre 2025</span>
+        </li>
+        <li class="ix-row" data-k="3">
+          <span class="ix-n mono">04</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-1195" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-1195 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-1195 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">G20 Conference in West Africa</span>
+          <span class="ix-place mono">Noom Hotel Dakar Sea Plaza</span>
+          <span class="ix-cat mono">Forum</span>
+          <span class="ix-date mono">Octobre 2025</span>
+        </li>
+        <li class="ix-row" data-k="4">
+          <span class="ix-n mono">05</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/video/c1-1155.jpg" srcset="https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/video/c1-1155.jpg 112w, https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/video/c1-1155.jpg 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">Film promotionnel Eden Lodge Desert Camp</span>
+          <span class="ix-place mono">·</span>
+          <span class="ix-cat mono">Corporate</span>
+          <span class="ix-date mono">Octobre 2025</span>
+        </li>
+        <li class="ix-row" data-k="5">
+          <span class="ix-n mono">06</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-594" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-594 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-594 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">5e Salon international de l’habitat et 1er Symposium des architectes africains</span>
+          <span class="ix-place mono">CICAD, Dakar</span>
+          <span class="ix-cat mono">Forum</span>
+          <span class="ix-date mono">Mai 2025</span>
+        </li>
+        <li class="ix-row" data-k="6">
+          <span class="ix-n mono">07</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-444" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-444 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-444 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">BAL 2025, match de basketball</span>
+          <span class="ix-place mono">Dakar</span>
+          <span class="ix-cat mono">Sport</span>
+          <span class="ix-date mono">Mai 2025</span>
+        </li>
+        <li class="ix-row" data-k="7">
+          <span class="ix-n mono">08</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-478" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-478 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-478 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">Concert de Tiken Jah Facoly</span>
+          <span class="ix-place mono">CICES, Dakar</span>
+          <span class="ix-cat mono">Culture</span>
+          <span class="ix-date mono">Mai 2025</span>
+        </li>
+        <li class="ix-row" data-k="8">
+          <span class="ix-n mono">09</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-676" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-676 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-676 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">10 km de Dakar, La Foulée de la Teranga</span>
+          <span class="ix-place mono">Corniche, Dakar</span>
+          <span class="ix-cat mono">Sport</span>
+          <span class="ix-date mono">Mai 2025</span>
+        </li>
+        <li class="ix-row" data-k="9">
+          <span class="ix-n mono">10</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-263" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-263 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-263 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">65 ans de l’Indépendance du Sénégal, défilé du 4 avril</span>
+          <span class="ix-place mono">Dakar</span>
+          <span class="ix-cat mono">Institutionnel</span>
+          <span class="ix-date mono">Avril 2025</span>
+        </li>
+        <li class="ix-row is-extra" data-k="10" hidden>
+          <span class="ix-n mono">11</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-285" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-285 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-285 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">SPACEBUS’2025, caravane nationale de l’espace</span>
+          <span class="ix-place mono">Sénégal</span>
+          <span class="ix-cat mono">Institutionnel</span>
+          <span class="ix-date mono">Avril 2025</span>
+        </li>
+        <li class="ix-row is-extra" data-k="11" hidden>
+          <span class="ix-n mono">12</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-350" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-350 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-350 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">Lancement du PROVES, Programme de Verdissement des Écoles du Sénégal</span>
+          <span class="ix-place mono">Dakar</span>
+          <span class="ix-cat mono">Institutionnel</span>
+          <span class="ix-date mono">Avril 2025</span>
+        </li>
+        <li class="ix-row is-extra" data-k="12" hidden>
+          <span class="ix-n mono">13</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-221" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-221 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-221 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">Senegal Expo Osaka 2025, rencontre officielle MINCOM et ASEPEX</span>
+          <span class="ix-place mono">Dakar</span>
+          <span class="ix-cat mono">Institutionnel</span>
+          <span class="ix-date mono">Mars 2025</span>
+        </li>
+        <li class="ix-row is-extra" data-k="13" hidden>
+          <span class="ix-n mono">14</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-199" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-199 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-199 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">Inauguration de la permanence du syndicat SPEBTPS</span>
+          <span class="ix-place mono">·</span>
+          <span class="ix-cat mono">Institutionnel</span>
+          <span class="ix-date mono">Février 2025</span>
+        </li>
+        <li class="ix-row is-extra" data-k="14" hidden>
+          <span class="ix-n mono">15</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-120" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-120 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-120 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">Réunion de coordination du CEFE</span>
+          <span class="ix-place mono">·</span>
+          <span class="ix-cat mono">Institutionnel</span>
+          <span class="ix-date mono">Janvier 2025</span>
+        </li>
+        <li class="ix-row is-extra" data-k="15" hidden>
+          <span class="ix-n mono">16</span>
+          <span class="ix-thumb"><img src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-983" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1,w_112/sowdigital/c1-983 112w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1,w_168/sowdigital/c1-983 168w" sizes="56px" width="112" height="112" alt="" loading="lazy" decoding="async"></span>
+          <span class="ix-t">Opération 1.000.000 arbres, reboisement de la mangrove</span>
+          <span class="ix-place mono">Sénégal</span>
+          <span class="ix-cat mono">Institutionnel</span>
+          <span class="ix-date mono">Novembre 2024</span>
+        </li>
+      </ol>
+      <button id="ixMore" class="ulink ix-more" type="button" aria-expanded="false" aria-controls="ixList"><span class="lbl">Voir tout l’index</span> <svg class="arr" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3v13M5 11l5 5 5-5"/></svg></button>
+    </div>
+    <div id="ixFloat" class="ix-float" aria-hidden="true"><div class="ix-float-in"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-1254" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c2-271" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-1136" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-1195" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/video/c1-1155.jpg" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-594" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-444" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-478" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-676" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-263" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-285" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-350" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-221" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-199" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-120" width="680" height="510" alt="" decoding="async"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_1.3333,w_680/sowdigital/c1-983" width="680" height="510" alt="" decoding="async"></div></div>
+  </section>
+
+  <!-- 05 Méthode : la séquence complète -->
+  <section id="methode" class="seq on-dark" aria-labelledby="sq-t" style="--n:6" data-nav="expertises">
+    <div class="seq-sticky">
+      <figure class="seq-fig is-active">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1258 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1258 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c1-1258 1280w" sizes="100vw">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1258" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1258 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1258 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1258 2560w" sizes="100vw" width="4000" height="2667" alt="Un groupe d'hommes en costume et en chemise marche en extérieur sous le soleil, dossiers à la main, à l'arrivée d'une rencontre." loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <figure class="seq-fig">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1228 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1228 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c1-1228 1280w" sizes="100vw">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1228" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1228 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1228 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1228 2560w" sizes="100vw" width="4000" height="2667" alt="Une intervenante en voile noir et tenue rose lit son discours au pupitre des Mardis du BTP, à l'Hôtel NOOM de Dakar." loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <figure class="seq-fig">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1263 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1263 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c1-1263 1280w" sizes="100vw">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1263" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1263 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1263 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1263 2560w" sizes="100vw" width="4000" height="2667" alt="Sur scène, un intervenant en tenue sombre parle au micro tandis qu'une panéliste en boubou violet prend des notes à ses côtés." loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <figure class="seq-fig">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1244 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1244 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c1-1244 1280w" sizes="100vw">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1244" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1244 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1244 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1244 2560w" sizes="100vw" width="4000" height="2667" alt="Dans le public assis, un homme lève son smartphone pour photographier la scène pendant la table ronde." loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <figure class="seq-fig">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1253 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1253 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c1-1253 1280w" sizes="100vw">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1253" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1253 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1253 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1253 2560w" sizes="100vw" width="4000" height="2667" alt="Deux personnalités en costume répondent aux micros tendus de la presse devant le panneau des Mardis du BTP." loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <figure class="seq-fig">
+        <picture>
+          <source media="(max-aspect-ratio: 4/5)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c1-1267 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c1-1267 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c1-1267 1280w" sizes="100vw">
+          <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1267" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1280/sowdigital/c1-1267 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1920/sowdigital/c1-1267 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_2560/sowdigital/c1-1267 2560w" sizes="100vw" width="4000" height="3210" alt="Un homme souriant en tenue blanche et lunettes bleutées discute avec un invité en costume lors d'un moment d'échange en salle." loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <div class="seq-shade" aria-hidden="true"></div>
+      <div class="wrap seq-ui">
+        <div class="seq-top">
+          <p class="mono label"><b>04</b> Méthode</p>
+          <h2 id="sq-t" class="h-lg">La séquence complète.</h2>
+          <p>Un événement officiel se raconte en séquences. Nous les couvrons toutes, dans l’ordre où elles arrivent.</p>
+        </div>
+        <ol class="seq-steps">
+          <li><button type="button" class="seq-step is-active" aria-current="step" data-label="Arrivée des officiels" data-desc="Accueil, protocole, premières poignées de main. Le décor est posé avant le premier mot." data-cap="Délégation en costume arrivant à pied · Les Mardis du BTP, Hôtel NOOM, Dakar · Avril 2026"><span class="mono">01</span><span class="dot" aria-hidden="true"></span><span class="lbl">Arrivée des officiels</span><span class="sr"> : aller à cette étape</span></button></li>
+          <li><button type="button" class="seq-step" data-label="Allocution" data-desc="Chaque prise de parole, au pupitre comme au micro, sous le bon angle." data-cap="Intervenante lisant son discours au pupitre · Les Mardis du BTP, Hôtel NOOM, Dakar · Avril 2026"><span class="mono">02</span><span class="dot" aria-hidden="true"></span><span class="lbl">Allocution</span><span class="sr"> : aller à cette étape</span></button></li>
+          <li><button type="button" class="seq-step" data-label="Panel" data-desc="Les intervenants, leurs gestes, les regards qui se croisent sur scène." data-cap="Panel avec intervenant au micro · Les Mardis du BTP, Hôtel NOOM, Dakar · Avril 2026"><span class="mono">03</span><span class="dot" aria-hidden="true"></span><span class="lbl">Panel</span><span class="sr"> : aller à cette étape</span></button></li>
+          <li><button type="button" class="seq-step" data-label="La salle" data-desc="Le public et ses réactions. L’ampleur d’un rendez-vous se lit aussi dans la salle." data-cap="Participant photographiant avec son téléphone · Les Mardis du BTP, Hôtel NOOM, Dakar · Avril 2026"><span class="mono">04</span><span class="dot" aria-hidden="true"></span><span class="lbl">La salle</span><span class="sr"> : aller à cette étape</span></button></li>
+          <li><button type="button" class="seq-step" data-label="Point presse" data-desc="Les déclarations face aux micros, à la sortie." data-cap="Point presse devant le panneau · Les Mardis du BTP, Hôtel NOOM, Dakar · Avril 2026"><span class="mono">05</span><span class="dot" aria-hidden="true"></span><span class="lbl">Point presse</span><span class="sr"> : aller à cette étape</span></button></li>
+          <li><button type="button" class="seq-step" data-label="Échanges" data-desc="Les discussions qui prolongent l’événement, jusqu’à la photo de famille." data-cap="Invités souriants en pleine discussion · Les Mardis du BTP, Hôtel NOOM, Dakar · Avril 2026"><span class="mono">06</span><span class="dot" aria-hidden="true"></span><span class="lbl">Échanges</span><span class="sr"> : aller à cette étape</span></button></li>
+        </ol>
+        <div class="seq-side" aria-live="polite">
+          <p id="seqNow" class="seq-now">Arrivée des officiels</p>
+          <p id="seqDesc" class="seq-desc">Accueil, protocole, premières poignées de main. Le décor est posé avant le premier mot.</p>
+          <p id="seqCap" class="seq-cap mono">Délégation en costume arrivant à pied · Les Mardis du BTP, Hôtel NOOM, Dakar · Avril 2026</p>
+        </div>
+      </div>
+      <div class="seq-prog" aria-hidden="true"><i id="seqBar"></i></div>
+    </div>
+  </section>
+
+  <!-- 06 Expertises -->
+  <section id="expertises" class="sec" aria-labelledby="ex-t" data-nav="expertises">
+    <div class="wrap">
+      <div class="grid12 exp-head">
+        <p class="mono label"><b>05</b> Expertises</p>
+        <h2 id="ex-t" class="h-xl">Nos métiers, vos terrains.</h2>
+        <p class="lead">Du protocole à la scène, le même soin du cadre. Et une seule équipe sur place.</p>
+      </div>
+      <ol class="disc">
+        <li data-r><span class="mono">01</span><h3>Photo</h3><p>Reportage complet, portraits officiels, photos de groupe et photo de famille. Une sélection prête à publier.</p></li>
+        <li data-r><span class="mono">02</span><h3>Vidéo</h3><p>Films récapitulatifs, films promotionnels, interviews et formats verticaux montés pour les réseaux.</p></li>
+        <li data-r><span class="mono">03</span><h3>Communication digitale</h3><p>Des contenus pour vos réseaux, tirés de ce que nous captons sur place. Signature : COM’DIGITAL 360.</p></li>
+      </ol>
+      <p class="mono label terr-label"><b>Terrains</b><span class="hint">Survolez un terrain pour l’ouvrir</span></p>
+    </div>
+    <ul class="terr on-dark">
+        <li class="terr-item is-open" data-r style="--d:0ms">
+          <picture>
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_768/sowdigital/c1-274" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-274 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_768/sowdigital/c1-274 768w" sizes="(max-width: 1100px) 50vw, 46vw" width="768" height="960" alt="Une personnalité officielle en boubou bleu guide un invité en tenue blanche et toque brodée vers une berline officielle." loading="lazy" decoding="async">
+          </picture>
+          <div class="terr-body">
+            <p class="mono">01</p>
+            <h3>Institutionnel</h3>
+            <div class="terr-more">
+              <p>Cérémonies officielles, défilés, lancements de programmes, accueils protocolaires.</p>
+              <span class="mono">Ex. 65 ans de l’Indépendance · Avril 2025</span>
+            </div>
+          </div>
+          <button type="button" class="terr-btn" aria-expanded="true"><span class="sr">Institutionnel : Cérémonies officielles, défilés, lancements de programmes, accueils protocolaires.</span></button>
+        </li>
+        <li class="terr-item" data-r style="--d:90ms">
+          <picture>
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_900/sowdigital/c1-294" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-294 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_900/sowdigital/c1-294 900w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_1300/sowdigital/c1-294 1300w" sizes="(max-width: 1100px) 50vw, 46vw" width="900" height="1125" alt="En noir et blanc, un intervenant en costume, cravate et lunettes s'exprime au micro lors d'une rencontre professionnelle." loading="lazy" decoding="async">
+          </picture>
+          <div class="terr-body">
+            <p class="mono">02</p>
+            <h3>Forums et sommets</h3>
+            <div class="terr-more">
+              <p>Plénières, panels, allocutions, points presse et photos de groupe.</p>
+              <span class="mono">Ex. Rencontre du SPEBTPS · Avril 2025</span>
+            </div>
+          </div>
+          <button type="button" class="terr-btn" aria-expanded="false"><span class="sr">Forums et sommets : Plénières, panels, allocutions, points presse et photos de groupe.</span></button>
+        </li>
+        <li class="terr-item" data-r style="--d:180ms">
+          <picture>
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_900/sowdigital/c1-1340" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-1340 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_900/sowdigital/c1-1340 900w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_1300/sowdigital/c1-1340 1300w" sizes="(max-width: 1100px) 50vw, 46vw" width="900" height="1125" alt="Des joueurs en maillots Celebrity Game blanc et vert, dont les numéros 35, 3 et 32, échangent sur le terrain." loading="lazy" decoding="async">
+          </picture>
+          <div class="terr-body">
+            <p class="mono">03</p>
+            <h3>Sport</h3>
+            <div class="terr-more">
+              <p>Courses, matchs, fan zones et remises de trophées.</p>
+              <span class="mono">Ex. Celebrity Game BAL · Août 2026</span>
+            </div>
+          </div>
+          <button type="button" class="terr-btn" aria-expanded="false"><span class="sr">Sport : Courses, matchs, fan zones et remises de trophées.</span></button>
+        </li>
+        <li class="terr-item" data-r style="--d:270ms">
+          <picture>
+            <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_682/sowdigital/c1-478" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_480/sowdigital/c1-478 480w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_fill,g_auto,ar_0.8,w_682/sowdigital/c1-478 682w" sizes="(max-width: 1100px) 50vw, 46vw" width="682" height="853" alt="L'artiste sourit en chantant au micro, main ouverte, devant les projecteurs rouges et orange de la scène du CICES." loading="lazy" decoding="async">
+          </picture>
+          <div class="terr-body">
+            <p class="mono">04</p>
+            <h3>Culture</h3>
+            <div class="terr-more">
+              <p>Concerts, spectacles, défilés de mode et soirées sur scène.</p>
+              <span class="mono">Ex. Concert de Tiken Jah Facoly · Mai 2025</span>
+            </div>
+          </div>
+          <button type="button" class="terr-btn" aria-expanded="false"><span class="sr">Culture : Concerts, spectacles, défilés de mode et soirées sur scène.</span></button>
+        </li>
+    </ul>
+  </section>
+
+  <!-- 07 Films -->
+  <section id="films" class="sec" aria-labelledby="fi-t" data-nav="travaux">
+    <div class="wrap">
+      <div class="grid12 film-head">
+        <p class="mono label"><b>06</b> Films</p>
+        <h2 id="fi-t" class="h-xl">En mouvement.</h2>
+        <p class="lead">Le même regard, monté en film. À regarder ici, sans quitter la page.</p>
+      </div>
+      <div id="player" class="player on-dark" data-r>
+        <img id="pImg" src="https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_limit,w_1440/sowdigital/video/c1-1155.jpg" srcset="https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_limit,w_960/sowdigital/video/c1-1155.jpg 960w, https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_limit,w_1440/sowdigital/video/c1-1155.jpg 1440w, https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_limit,w_1920/sowdigital/video/c1-1155.jpg 1920w" sizes="(max-width: 1600px) 100vw, 1488px" width="1920" height="1080" alt="Film promo Eden Lodge dans le désert" loading="lazy" decoding="async">
+        <button id="pPlay" class="play" type="button" aria-label="Lire le film Eden Lodge Desert Camp, 2 min 07"><span class="play-c"><svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor"><path d="M5 3.5v13l11-6.5z"/></svg></span></button>
+        <div class="player-meta">
+          <span><span id="pTitle" class="cap-title" style="display:block">Eden Lodge Desert Camp</span><span id="pMeta" class="mono" style="color:rgba(255,255,255,.75)">Film promotionnel · Octobre 2025 · 4K · 2 min 07</span></span>
+          <span class="mono pm-note" style="color:rgba(255,255,255,.75);align-self:flex-end">Lecture dans la page</span>
+        </div>
+      </div>
+      <div class="films" role="group" aria-label="Choisir un film">
+        <button type="button" class="film-tab" aria-pressed="true" data-mp4="https://res.cloudinary.com/ddq9ydouz/video/upload/q_auto,vc_h264,c_limit,w_1920/sowdigital/video/c1-1155.mp4" data-poster="https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_limit,w_1920/sowdigital/video/c1-1155.jpg" data-srcset="https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_limit,w_960/sowdigital/video/c1-1155.jpg 960w, https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_limit,w_1440/sowdigital/video/c1-1155.jpg 1440w, https://res.cloudinary.com/ddq9ydouz/video/upload/so_80,f_auto,q_auto,c_limit,w_1920/sowdigital/video/c1-1155.jpg 1920w" data-title="Eden Lodge Desert Camp" data-meta="Film promotionnel · Octobre 2025 · 4K · 2 min 07" data-dur="2 min 07" data-alt="Film promo Eden Lodge dans le désert">
+          <span class="dot" aria-hidden="true"></span>
+          <b>Eden Lodge Desert Camp</b>
+          <span class="mono">Film promotionnel · 2 min 07</span>
+        </button>
+        <button type="button" class="film-tab" aria-pressed="false" data-mp4="https://res.cloudinary.com/ddq9ydouz/video/upload/q_auto,vc_h264,c_limit,w_1280/sowdigital/video/c1-928.mp4" data-poster="https://res.cloudinary.com/ddq9ydouz/video/upload/so_30,f_auto,q_auto,c_limit,w_1280/sowdigital/video/c1-928.jpg" data-srcset="https://res.cloudinary.com/ddq9ydouz/video/upload/so_30,f_auto,q_auto,c_limit,w_960/sowdigital/video/c1-928.jpg 960w, https://res.cloudinary.com/ddq9ydouz/video/upload/so_30,f_auto,q_auto,c_limit,w_1280/sowdigital/video/c1-928.jpg 1280w" data-title="10 km de Dakar, La Foulée de la Teranga" data-meta="Film récap · Mai 2025 · 7 min 49" data-dur="7 min 49" data-alt="Image du film récap des 10 km de Dakar sur la corniche">
+          <span class="dot" aria-hidden="true"></span>
+          <b>10 km de Dakar, La Foulée de la Teranga</b>
+          <span class="mono">Film récap · 7 min 49</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 Studio -->
+  <section id="studio" class="sec" aria-labelledby="sd-t" data-nav="studio">
+    <div class="wrap grid12 studio">
+      <figure class="studio-fig" data-r="clip">
+        <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_900/media/team/fallou_sow" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_600/media/team/fallou_sow 600w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_900/media/team/fallou_sow 900w, https://res.cloudinary.com/ddq9ydouz/image/upload/f_auto,q_auto,c_limit,w_1353/media/team/fallou_sow 1353w" sizes="(max-width: 899px) 90vw, 38vw" width="1353" height="1895" alt="Portrait de Fallou Sow, fondateur et directeur créatif de SowDigital." loading="lazy" decoding="async">
+      </figure>
+      <div class="studio-txt">
+        <p class="mono label"><b>07</b> Studio</p>
+        <h2 id="sd-t" class="h-lg">Fallou Sow, fondateur et directeur créatif.</h2>
+        <p class="lead">Fallou Sow a fondé SowDigital à Dakar et en tient la direction créative. Il transmet aussi le métier, en masterclass comme en atelier.</p>
+        <ul class="studio-list">
+          <li><span class="mono">Déc. 2024</span><span>Invité de l’émission Miroir du Sénégal sur la TFM</span></li>
+          <li><span class="mono">Avr. 2025</span><span>Week-End Numérique à Malicounda</span></li>
+          <li><span class="mono">Oct. 2025</span><span>Masterclass photo</span></li>
+        </ul>
+        <a class="ulink" href="#studio">Découvrir le studio <svg class="arr" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 Contact : plan final, plein écran -->
+  <section id="contact" class="fin on-dark" aria-labelledby="ct-t" data-nav="contact">
+    <picture class="fin-bg">
+      <source media="(max-aspect-ratio: 4/5)" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_640/sowdigital/c2-265 640w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_960/sowdigital/c2-265 960w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_fill,g_auto,ar_0.5,w_1280/sowdigital/c2-265 1280w" sizes="100vw">
+      <img src="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_limit,w_1920/sowdigital/c2-265" srcset="https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_limit,w_1280/sowdigital/c2-265 1280w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_limit,w_1920/sowdigital/c2-265 1920w, https://res.cloudinary.com/ddq9ydouz/image/upload/c_crop,h_0.88,g_north/f_auto,q_auto,c_limit,w_2560/sowdigital/c2-265 2560w" sizes="100vw" width="4000" height="2667" alt="Une troupe de danseurs en tee-shirts blancs exécute une chorégraphie sur une scène de nuit éclairée par des projecteurs." loading="lazy" decoding="async">
+    </picture>
+    <div class="fin-shade" aria-hidden="true"></div>
+    <div class="wrap fin-ui">
+      <p class="mono label"><b>08</b> Contact</p>
+      <h2 id="ct-t" class="cta-title">Parlons de votre prochain événement.</h2>
+      <div class="grid12 fin-row">
+        <p class="fin-lede">Envoyez la date, le lieu et le programme sur WhatsApp. Nous revenons vers vous avec une proposition de couverture.</p>
+        <div class="fin-cta">
+          <a class="btn btn-signal" href="https://wa.me/221773718484?text=Bonjour%20SowDigital%2C%20je%20vous%20%C3%A9cris%20au%20sujet%20d%E2%80%99un%20%C3%A9v%C3%A9nement." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.84 9.84 0 0 0 12.04 2Zm0 18.15h-.01a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>Écrire sur WhatsApp <svg class="arr" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h13M11 5l5 5-5 5"/></svg></a>
+          <p class="fin-alt"><a href="tel:+221773718484">+221 77 371 84 84</a><a href="mailto:fallou@groupe-sowdigital.com">fallou@groupe-sowdigital.com</a></p>
+        </div>
+      </div>
+      <p class="fin-cap mono">Plan final · NP Show Culture, 1ère édition · Janvier 2026</p>
+    </div>
+  </section>
+</main>
+
+<footer class="ftr on-dark">
+  <div class="wrap">
+    <div class="ftr-top">
+      <img class="ftr-logo" src="../brand/logo-light.png" width="720" height="103" alt="SowDigital, COM’DIGITAL 360" loading="lazy" decoding="async">
+      <p class="mono ftr-kicker">Générique</p>
+    </div>
+    <dl class="credits">
+      <div><dt class="mono">Réalisation</dt><dd>SowDigital, Dakar</dd></div>
+      <div><dt class="mono">Direction créative</dt><dd>Fallou Sow</dd></div>
+      <div><dt class="mono">Métiers</dt><dd>Photo, vidéo, communication digitale</dd></div>
+      <div><dt class="mono">Signature</dt><dd>COM’DIGITAL 360</dd></div>
+      <div><dt class="mono">Lieux</dt><dd>Hôtel NOOM, CICAD, CICES, Dakar Sea Plaza, Terrou-Bi, la corniche de Dakar, Saint-Louis</dd></div>
+      <div><dt class="mono">Contact</dt><dd class="links"><a href="https://wa.me/221773718484?text=Bonjour%20SowDigital%2C%20je%20vous%20%C3%A9cris%20au%20sujet%20d%E2%80%99un%20%C3%A9v%C3%A9nement." target="_blank" rel="noopener">WhatsApp</a><a href="tel:+221773718484">+221 77 371 84 84</a><a href="mailto:fallou@groupe-sowdigital.com">fallou@groupe-sowdigital.com</a></dd></div>
+      <div><dt class="mono">Réseaux</dt><dd class="links"><a href="https://www.instagram.com/sowdigital221" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/sowdigitalsenegal" target="_blank" rel="noopener">Facebook</a></dd></div>
+    </dl>
+    <div class="ftr-bot mono">
+      <span>© Groupe SowDigital, Dakar</span>
+      <nav class="ftr-nav" aria-label="Pied de page"><a href="#travaux">Travaux</a><a href="#expertises">Expertises</a><a href="#studio">Studio</a><a href="#contact">Mentions légales</a></nav>
+      <a href="#top">Retour à l’ouverture ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div id="cursor" class="cursor" aria-hidden="true"><div class="cursor-in mono"><span class="dot"></span>Glisser</div></div>
+
+<script>
+(function () {
+  var d = document, root = d.documentElement;
+  var $ = function (s, c) { return (c || d).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || d).querySelectorAll(s)); };
+  var clamp = function (v, a, b) { return Math.min(b, Math.max(a, v)); };
+  var mqReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  var reduce = mqReduce.matches;
+  var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (fine) root.classList.add('fine');
+  var behavior = function () { return reduce ? 'auto' : 'smooth'; };
+
+  /* ---------- En-tête : fond, masquage au défilement ---------- */
+  var hdr = $('#hdr'), hero = $('#top'), heroH = hero.offsetHeight, lastY = scrollY, menuOpen = false;
+  function updHeader(y) {
+    hdr.classList.toggle('is-solid', menuOpen || y > heroH - hdr.offsetHeight - 2);
+    var dy = y - lastY;
+    if (Math.abs(dy) > 6) {
+      hdr.classList.toggle('is-hidden', dy > 0 && y > 480 && !menuOpen && !hdr.contains(d.activeElement));
+      lastY = y;
+    }
+  }
+  hdr.addEventListener('focusin', function () { hdr.classList.remove('is-hidden'); });
+
+  /* ---------- Menu mobile ---------- */
+  var burger = $('#burger'), menu = $('#menu');
+  function setMenu(open) {
+    menuOpen = open;
+    root.classList.toggle('menu-open', open);
+    root.style.overflow = open ? 'hidden' : '';
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    menu.inert = !open;
+    hdr.classList.remove('is-hidden');
+    updHeader(scrollY);
+    if (open) setTimeout(function () { $('a', menu).focus(); }, 60);
+  }
+  burger.addEventListener('click', function () { setMenu(!menuOpen); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  d.addEventListener('keydown', function (e) {
+    if (!menuOpen) return;
+    if (e.key === 'Escape') { setMenu(false); burger.focus(); return; }
+    if (e.key !== 'Tab') return;
+    var f = [burger].concat($$('a, button', menu)), i = f.indexOf(d.activeElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+  });
+  matchMedia('(min-width: 900px)').addEventListener('change', function (e) { if (e.matches && menuOpen) setMenu(false); });
+
+  /* ---------- Ouverture : montage en fondu ---------- */
+  var slides = $$('.slide'), segs = $$('.seg'), cur = 0, playing = !reduce, heroVisible = true;
+  var capTxt = $('#capTxt'), capIdx = $('#capIdx'), capTitle = $('#capTitle'), capMeta = $('#capMeta'), playBtn = $('#heroPlay');
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  function heroSync() {
+    hero.classList.toggle('is-playing', playing);
+    hero.classList.toggle('is-running', playing && heroVisible && !d.hidden);
+    playBtn.setAttribute('aria-label', playing ? 'Mettre le diaporama en pause' : 'Lire le diaporama');
+  }
+  function prime(i) {
+    var s = slides[(i + slides.length) % slides.length];
+    if (!s || s.dataset.primed) return;
+    s.dataset.primed = '1';
+    $$('source[data-srcset]', s).forEach(function (el) { el.srcset = el.dataset.srcset; });
+    var im = $('img', s);
+    if (im.dataset.srcset) { im.srcset = im.dataset.srcset; im.src = im.dataset.src; }
+  }
+  function restartBar(seg) { var b = seg.querySelector('i'); b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; }
+  function go(i) {
+    i = (i + slides.length) % slides.length;
+    if (i === cur) return;
+    prime(i); prime(i + 1);
+    slides.forEach(function (s) { s.classList.remove('is-prev', 'is-first'); });
+    slides[cur].classList.remove('is-active');
+    slides[cur].classList.add('is-prev');
+    slides[cur].setAttribute('aria-hidden', 'true');
+    slides[i].classList.add('is-active');
+    slides[i].removeAttribute('aria-hidden');
+    segs.forEach(function (s, k) {
+      s.classList.toggle('is-done', k < i);
+      s.classList.toggle('is-cur', k === i);
+      if (k === i) s.setAttribute('aria-current', 'true'); else s.removeAttribute('aria-current');
+    });
+    restartBar(segs[i]);
+    capTxt.classList.add('swap');
+    var s = slides[i];
+    setTimeout(function () {
+      capIdx.textContent = pad(i + 1);
+      capTitle.textContent = s.dataset.t;
+      capMeta.textContent = s.dataset.m;
+      capTxt.classList.remove('swap');
+    }, 260);
+    cur = i;
+  }
+  segs.forEach(function (s, k) {
+    s.querySelector('i').addEventListener('animationend', function () { if (playing) go(cur + 1); });
+    s.addEventListener('pointerenter', function () { prime(k); });
+    s.addEventListener('click', function () {
+      if (!playing) hero.classList.add('is-static');
+      go(k);
+    });
+  });
+  playBtn.addEventListener('click', function () {
+    playing = !playing;
+    if (playing && hero.classList.contains('is-static')) { hero.classList.remove('is-static'); restartBar(segs[cur]); }
+    heroSync();
+  });
+  if (!playing) hero.classList.add('is-static');
+  var tx0 = null;
+  hero.addEventListener('touchstart', function (e) { tx0 = e.touches[0].clientX; }, { passive: true });
+  hero.addEventListener('touchend', function (e) {
+    if (tx0 === null) return;
+    var dx = e.changedTouches[0].clientX - tx0; tx0 = null;
+    if (Math.abs(dx) > 60) { if (!playing) hero.classList.add('is-static'); go(cur + (dx < 0 ? 1 : -1)); }
+  }, { passive: true });
+  new IntersectionObserver(function (es) { heroVisible = es[0].isIntersecting; heroSync(); }, { threshold: 0.15 }).observe(hero);
+  d.addEventListener('visibilitychange', heroSync);
+  heroSync();
+  if (d.readyState === 'complete') prime(1); else addEventListener('load', function () { prime(1); });
+
+  /* ---------- Révélations au défilement ---------- */
+  /* Un élément masqué par clip-path n'intersecte jamais : on observe son parent. */
+  var rio = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      (e.target._rev || [e.target]).forEach(function (el) { el.classList.add('in'); });
+      rio.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+  $$('[data-r]').forEach(function (el) {
+    if (el.getAttribute('data-r') !== 'clip') { rio.observe(el); return; }
+    var t = el.parentElement; (t._rev = t._rev || []).push(el); rio.observe(t);
+  });
+
+  /* ---------- Manifeste : les mots s'allument ---------- */
+  var st = $('[data-words]'), words = [], lit = -1;
+  if (st) {
+    var parts = st.textContent.trim().split(/\s+/);
+    st.textContent = '';
+    parts.forEach(function (w, i) {
+      var sp = d.createElement('span'); sp.className = 'w'; sp.textContent = w;
+      st.appendChild(sp); if (i < parts.length - 1) st.appendChild(d.createTextNode(' '));
+      words.push(sp);
+    });
+  }
+  function updWords(vh) {
+    if (!st) return;
+    var r = st.getBoundingClientRect();
+    if (r.bottom < -100 || r.top > vh + 100) return;
+    var p = clamp((vh * 0.86 - r.top) / (vh * 0.42 + r.height), 0, 1);
+    var n = Math.round(p * words.length);
+    if (n === lit) return;
+    lit = n;
+    words.forEach(function (w, i) { w.classList.toggle('on', i < n); });
+  }
+
+  /* ---------- Travaux : bande horizontale ---------- */
+  var strip = $('#strip'), cards = $$('.card', strip), wPrev = $('#wPrev'), wNext = $('#wNext');
+  var wTrack = $('#wTrack'), wThumb = $('#wThumb'), wCount = $('#wCount');
+  var track = $('.strip-track', strip);
+  function padL() { return parseFloat(getComputedStyle(track).paddingLeft) || 0; }
+  function cardX(c) { return c.offsetLeft - padL(); }
+  function nearest() {
+    var best = 0, bd = Infinity, x = strip.scrollLeft;
+    cards.forEach(function (c, i) { var dd = Math.abs(cardX(c) - x); if (dd < bd) { bd = dd; best = i; } });
+    return best;
+  }
+  function stripState() {
+    var max = strip.scrollWidth - strip.clientWidth, x = strip.scrollLeft;
+    var p = max > 0 ? x / max : 0, tw = wTrack.clientWidth, th = Math.max(36, tw * strip.clientWidth / strip.scrollWidth);
+    wThumb.style.width = th + 'px';
+    wThumb.style.transform = 'translateX(' + (p * (tw - th)) + 'px)';
+    wPrev.setAttribute('aria-disabled', String(x <= 2));
+    wNext.setAttribute('aria-disabled', String(x >= max - 2));
+    var i = x >= max - 2 ? cards.length - 1 : nearest();
+    wCount.textContent = pad(i + 1);
+  }
+  function scrollToCard(c) { strip.scrollTo({ left: cardX(c), behavior: behavior() }); }
+  wNext.addEventListener('click', function () {
+    var x = strip.scrollLeft, t = cards.filter(function (c) { return cardX(c) > x + 4; })[0];
+    if (t) scrollToCard(t);
+  });
+  wPrev.addEventListener('click', function () {
+    var x = strip.scrollLeft, t = cards.filter(function (c) { return cardX(c) < x - 4; }).pop();
+    if (t) scrollToCard(t);
+  });
+  strip.addEventListener('scroll', function () { requestAnimationFrame(stripState); }, { passive: true });
+  var drag = null;
+  strip.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    drag = { x: e.clientX, l: strip.scrollLeft, i: nearest(), moved: 0 };
+    strip.classList.add('is-drag'); cursor && cursor.classList.add('down');
+  });
+  addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    var dx = e.clientX - drag.x; drag.moved = Math.max(drag.moved, Math.abs(dx));
+    strip.scrollLeft = drag.l - dx;
+  });
+  addEventListener('pointerup', function (e) {
+    if (!drag) return;
+    var dx = e.clientX - drag.x, i = nearest();
+    if (i === drag.i && Math.abs(dx) > 60) i = clamp(i + (dx < 0 ? 1 : -1), 0, cards.length - 1);
+    drag = null; cursor && cursor.classList.remove('down');
+    strip.scrollTo({ left: cardX(cards[i]), behavior: behavior() });
+    var done = function () { strip.classList.remove('is-drag'); };
+    if ('onscrollend' in window) strip.addEventListener('scrollend', done, { once: true }); else setTimeout(done, 600);
+    setTimeout(done, 900);
+  });
+  strip.addEventListener('dragstart', function (e) { e.preventDefault(); });
+  var cursor = $('#cursor');
+  if (fine && cursor) {
+    var cx = 0, cy = 0, tx = 0, ty = 0, cOn = false, cRun = false;
+    var cLoop = function () {
+      cx += (tx - cx) * 0.24; cy += (ty - cy) * 0.24;
+      cursor.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
+      if (cOn || Math.abs(tx - cx) + Math.abs(ty - cy) > 0.5) requestAnimationFrame(cLoop); else cRun = false;
+    };
+    strip.addEventListener('pointerenter', function (e) {
+      tx = e.clientX; ty = e.clientY; if (!cRun) { cx = tx; cy = ty; }
+      cOn = true; cursor.classList.add('on'); if (!cRun) { cRun = true; cLoop(); }
+    });
+    strip.addEventListener('pointermove', function (e) { tx = e.clientX; ty = e.clientY; });
+    strip.addEventListener('pointerleave', function () { cOn = false; cursor.classList.remove('on'); });
+  }
+
+  /* ---------- Index : aperçu qui suit le curseur ---------- */
+  var list = $('#ixList'), fl = $('#ixFloat');
+  if (fine && list && fl) {
+    var fimgs = $$('img', fl), loaded = false, act = -1, fx = 0, fy = 0, ftx = 0, fty = 0, fOn = false, fRun = false;
+    var fw = function () { return fl.offsetWidth; };
+    var fLoop = function () {
+      var dx = ftx - fx;
+      fx += dx * (reduce ? 1 : 0.14); fy += (fty - fy) * (reduce ? 1 : 0.14);
+      var w = fw(), h = w * 0.75, ox = ftx > innerWidth - w - 60 ? -w - 24 : 24, oy = fty > h + 96 ? -h - 20 : 28;
+      var rot = reduce ? 0 : clamp(dx * 0.05, -7, 7);
+      fl.style.transform = 'translate3d(' + (fx + ox) + 'px,' + (fy + oy) + 'px,0) rotate(' + rot + 'deg)';
+      if (fOn || Math.abs(dx) > 0.5) requestAnimationFrame(fLoop); else fRun = false;
+    };
+    var loadAll = function () { if (!loaded) { fimgs.forEach(function (im) { im.src = im.dataset.src; }); loaded = true; } };
+    var lio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { loadAll(); lio.disconnect(); } }, { rootMargin: '400px 0px' });
+    lio.observe(list);
+    list.addEventListener('pointerenter', function (e) {
+      loadAll();
+      ftx = e.clientX; fty = e.clientY; if (!fRun) { fx = ftx; fy = fty; }
+      fOn = true; fl.classList.add('on'); if (!fRun) { fRun = true; fLoop(); }
+    });
+    list.addEventListener('pointermove', function (e) {
+      ftx = e.clientX; fty = e.clientY;
+      var row = e.target.closest('.ix-row'), k = row ? +row.dataset.k : -1;
+      if (k !== act) { act = k; fimgs.forEach(function (im, j) { im.classList.toggle('on', j === k); }); fl.classList.toggle('has', k >= 0); }
+    });
+    list.addEventListener('pointerleave', function () { fOn = false; act = -1; fl.classList.remove('on', 'has'); });
+  }
+  var more = $('#ixMore');
+  if (more) more.addEventListener('click', function () {
+    var open = more.getAttribute('aria-expanded') !== 'true';
+    $$('.ix-row.is-extra').forEach(function (r) { r.hidden = !open; });
+    more.setAttribute('aria-expanded', String(open));
+    more.querySelector('.lbl').textContent = open ? 'Réduire l’index' : 'Voir tout l’index';
+  });
+
+  /* ---------- Méthode : la séquence suit le défilement ---------- */
+  var seq = $('#methode'), sFigs = $$('.seq-fig', seq), sSteps = $$('.seq-step', seq);
+  var sBar = $('#seqBar'), sNow = $('#seqNow'), sDesc = $('#seqDesc'), sCap = $('#seqCap'), sIdx = -1;
+  function updSeq(vh) {
+    var r = seq.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > vh) return;
+    var total = r.height - vh, p = clamp(-r.top / total, 0, 1);
+    sBar.style.transform = 'scaleX(' + p + ')';
+    var i = Math.min(sFigs.length - 1, Math.floor(p * sFigs.length));
+    if (i === sIdx) return;
+    sIdx = i;
+    sFigs.forEach(function (f, k) { f.classList.toggle('is-active', k === i); });
+    sSteps.forEach(function (s, k) {
+      s.classList.toggle('is-active', k === i);
+      if (k === i) s.setAttribute('aria-current', 'step'); else s.removeAttribute('aria-current');
+    });
+    sNow.textContent = sSteps[i].dataset.label;
+    sDesc.textContent = sSteps[i].dataset.desc;
+    sCap.textContent = sSteps[i].dataset.cap;
+  }
+  sSteps.forEach(function (s, k) {
+    s.addEventListener('click', function () {
+      var top = scrollY + seq.getBoundingClientRect().top, total = seq.offsetHeight - innerHeight;
+      scrollTo({ top: top + total * (k + 0.5) / sFigs.length, behavior: behavior() });
+    });
+  });
+
+  /* ---------- Terrains : panneaux qui s'ouvrent ---------- */
+  var terr = $$('.terr-item');
+  terr.forEach(function (t) {
+    var b = $('.terr-btn', t);
+    var open = function () {
+      terr.forEach(function (o) {
+        var on = o === t; o.classList.toggle('is-open', on);
+        var ob = $('.terr-btn', o); if (ob) ob.setAttribute('aria-expanded', String(on));
+      });
+    };
+    t.addEventListener('mouseenter', open);
+    if (b) { b.addEventListener('focus', open); b.addEventListener('click', open); }
+  });
+
+  /* ---------- Films : lecture dans la page ---------- */
+  var player = $('#player'), pImg = $('#pImg'), pPlay = $('#pPlay'), pTitle = $('#pTitle'), pMeta = $('#pMeta'), tabs = $$('.film-tab');
+  var film = 0;
+  function stopVideo() { var v = $('video', player); if (v) { v.pause(); v.remove(); } player.classList.remove('is-playing'); }
+  tabs.forEach(function (t, k) {
+    t.addEventListener('click', function () {
+      if (k === film) return;
+      film = k; stopVideo();
+      tabs.forEach(function (o, j) { o.setAttribute('aria-pressed', String(j === k)); });
+      pImg.srcset = t.dataset.srcset; pImg.src = t.dataset.poster; pImg.alt = t.dataset.alt;
+      pTitle.textContent = t.dataset.title; pMeta.textContent = t.dataset.meta;
+      pPlay.setAttribute('aria-label', 'Lire le film ' + t.dataset.title + ', ' + t.dataset.dur);
+    });
+  });
+  pPlay.addEventListener('click', function () {
+    var t = tabs[film], v = d.createElement('video');
+    v.src = t.dataset.mp4; v.poster = t.dataset.poster; v.controls = true; v.playsInline = true; v.preload = 'auto';
+    v.setAttribute('aria-label', t.dataset.title);
+    player.appendChild(v); player.classList.add('is-playing');
+    var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+    v.focus();
+  });
+
+  /* ---------- Plan final : léger parallaxe ---------- */
+  var band = $('#contact'), bandImg = band && $('.fin-bg img', band);
+  function updBand(vh) {
+    if (!band || reduce) return;
+    var r = band.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > vh) return;
+    var p = (r.top + r.height / 2 - vh / 2) / vh;
+    bandImg.style.transform = 'translate3d(0,' + (p * -6).toFixed(2) + '%,0) scale(' + (1 + 0.1 * clamp(p, 0, 1)).toFixed(4) + ')';
+  }
+
+  /* ---------- Navigation active ---------- */
+  var navLinks = $$('.nav a');
+  var nio = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var id = e.target.dataset.nav;
+      navLinks.forEach(function (a) { if (id && a.hash === '#' + id) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    });
+  }, { rootMargin: '-45% 0px -54% 0px' });
+  $$('[data-nav]').forEach(function (s) { nio.observe(s); });
+  var nTop = new IntersectionObserver(function (es) { if (es[0].isIntersecting) navLinks.forEach(function (a) { a.removeAttribute('aria-current'); }); }, { rootMargin: '-45% 0px -54% 0px' });
+  nTop.observe(hero);
+
+  /* ---------- Boucle de défilement ---------- */
+  var ticking = false;
+  function frame() {
+    ticking = false;
+    var y = scrollY, vh = innerHeight;
+    updHeader(y); updWords(vh); updSeq(vh); updBand(vh);
+  }
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+  addEventListener('resize', function () { heroH = hero.offsetHeight; lit = -1; sIdx = -1; stripState(); frame(); });
+  mqReduce.addEventListener('change', function (e) { reduce = e.matches; });
+  stripState(); frame();
+})();
+
+</script>
+<a href="../" style="position:fixed;left:16px;bottom:16px;z-index:2147483000;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;background:#0b0b0b;color:#fff;font:500 14px/1 system-ui,sans-serif;text-decoration:none;box-shadow:0 6px 24px rgba(0,0,0,.25)">&larr; Les 3 pistes</a>
+</body>
+</html>
